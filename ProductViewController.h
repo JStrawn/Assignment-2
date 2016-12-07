@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface ProductViewController : UITableViewController
-@property (nonatomic, retain) NSArray *products;
+@property (nonatomic, retain) NSMutableArray *products;
 @end
