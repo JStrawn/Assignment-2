@@ -8,6 +8,9 @@
 
 #import "CompanyViewController.h"
 #import "ProductViewController.h"
+#import "Company.h"
+#import "Product.h"
+#import "DAO.h"
 
 @interface CompanyViewController ()
 
@@ -25,53 +28,80 @@
     return self;
 }
 
+//#pragma mark Initializing companies and products
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 
-    // Uncomment the following line to preserve selection between presentations.
+    // Preserve selection between presentations
      self.clearsSelectionOnViewWillAppear = NO;
  
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // Edit Button
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
+//    // Initialize Products
+//    Product *iPad = [[Product alloc]initWithName:@"iPad" andImage:@"apple-xxl.png" andURL:@"http://www.apple.com/ipad/"];
+//    Product *iPodTouch = [[Product alloc]initWithName:@"iPod Touch" andImage:@"apple-xxl.png" andURL:@"http://www.apple.com/ipod-touch/"];
+//    Product *iPhone = [[Product alloc]initWithName:@"iPhone" andImage:@"apple-xxl.png" andURL:@"http://www.apple.com/iphone-7/"];
+//    
+//    Product *galaxyS4 = [[Product alloc]initWithName:@"Galaxy S4" andImage:@"samsung.jpg" andURL:@"http://www.samsung.com/us/mobile/phones/galaxy-s/samsung-galaxy-s4-verizon-white-frost-16gb-sch-i545zwavzw/"];
+//    Product *galaxyNote = [[Product alloc]initWithName:@"Galaxy Note" andImage:@"samsung.jpg" andURL:@"http://www.samsung.com/us/mobile/phones/galaxy-note/samsung-galaxy-note5-32gb-at-t-black-sapphire-sm-n920azkaatt/"];
+//    Product *galaxyTab = [[Product alloc]initWithName:@"Galaxy Tab" andImage:@"samsung.jpg" andURL:@"http://www.samsung.com/us/mobile/tablets/galaxy-tab-s2/sm-t713-sm-t713nzkexar/"];
+//    
+//    Product *googlePixel = [[Product alloc]initWithName:@"Google Pixel" andImage:@"google.png" andURL:@"https://madeby.google.com/phone/"];
+//    Product *nexus6P = [[Product alloc]initWithName:@"Nexus 6P" andImage:@"google.png" andURL:@"https://www.google.com/nexus/6p/"];
+//    Product *nexus5X = [[Product alloc]initWithName:@"Nexus 5X" andImage:@"google.png" andURL:@"https://www.google.com/nexus/5x/"];
+//    
+//    Product *amazonFire = [[Product alloc]initWithName:@"Amazon Fire Phone" andImage:@"amazon.png" andURL:@"https://www.amazon.com/Amazon-Fire-Phone-32GB-Unlocked/dp/B00OC0USA6"];
+//    Product *kindleFire = [[Product alloc]initWithName:@"Kindle Fire" andImage:@"amazon.png" andURL: @"https://www.amazon.com/Amazon-Fire-7-Inch-Tablet-8GB/dp/B00TSUGXKE"];
+//    Product *kindlePaperWhite = [[Product alloc]initWithName:@"Kindle PaperWhite" andImage:@"amazon.png" andURL:  @"https://www.amazon.com/Amazon-Kindle-Paperwhite-6-Inch-4GB-eReader/dp/B00OQVZDJM"];
     
-    self.companyList = [[NSMutableArray alloc]initWithObjects:@"Apple mobile devices",@"Samsung mobile devices", @"Google mobile devices", @"Amazon mobile devices", nil];
+//    // Initialize Companies with Products
+//    Company *apple = [[Company alloc]initWithName:@"Apple" andTitle:@"Apple mobile products" andProducts:[[NSMutableArray alloc]initWithObjects:iPad, iPodTouch, iPhone, nil] andImage:@"apple-xxl.png"];
+//    
+//    Company *samsung = [[Company alloc]initWithName:@"Samsung" andTitle:@"Samsung mobile products" andProducts:[[NSMutableArray alloc]initWithObjects:galaxyS4, galaxyNote, galaxyTab, nil] andImage:@"samsung.jpg"];
+//    
+//    Company *google = [[Company alloc]initWithName:@"Google" andTitle:@"Google mobile products" andProducts:[[NSMutableArray alloc]initWithObjects:googlePixel, nexus6P, nexus5X, nil] andImage:@"google.png"];
+//    
+//    Company *amazon = [[Company alloc]initWithName:@"Amazon" andTitle:@"Amazon mobile devices" andProducts:[[NSMutableArray alloc]initWithObjects:amazonFire, kindleFire, kindlePaperWhite, nil] andImage:@"amazon.png"];
+    
+    // Place all companies into an array
+//    self.companyList = [[NSMutableArray alloc]initWithObjects:apple, samsung, google, amazon, nil];
 //    [[NSUserDefaults standardUserDefaults] setObject:self.companyList forKey:@"companyList"];
     self.title = @"Mobile device makers";
+    self.sharedManager = [DAO sharedManager];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     //self.companyList = [[[NSUserDefaults standardUserDefaults] objectForKey:@"companyList"]mutableCopy];
 }
 
-- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
-    [super setEditing:editing animated:animated];
-    [self.tableView setEditing:editing animated:animated];
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
     // Return the number of sections.
     return 1;
 }
 
+//- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+//    return 50;
+//}
+
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return self.companyList.count;
+    return _sharedManager.companyList.count;
 }
 
+// Initialize the cells
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
@@ -80,35 +110,30 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
     }
     
-    // Configure the cell...
-    
-    cell.textLabel.text = [self.companyList objectAtIndex:[indexPath row]];
-    if ([cell.textLabel.text isEqualToString:@"Apple mobile devices"]) {
-        [[cell imageView] setImage: [UIImage imageNamed:@"apple-xxl.png"]];
-    } else if ([cell.textLabel.text isEqualToString:@"Google mobile devices"]) {
-        [[cell imageView] setImage: [UIImage imageNamed:@"google.png"]];
-    } else if ([cell.textLabel.text isEqualToString:@"Samsung mobile devices"]) {
-        [[cell imageView] setImage: [UIImage imageNamed:@"samsung.jpg"]];
-    } else {
-        [[cell imageView] setImage: [UIImage imageNamed:@"amazon.png"]];
-    }
+    // Configure the cells (Title and Photo)
+    Company *currentCompany = [_sharedManager.companyList objectAtIndex:[indexPath row]];
+    cell.textLabel.text = currentCompany.title;
+    [[cell imageView] setImage: [UIImage imageNamed:currentCompany.photo]];
     return cell;
 }
 
+// Enable editing the table view
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    [super setEditing:editing animated:animated];
+    [self.tableView setEditing:editing animated:animated];
+}
 
-// Override to support conditional editing of the table view.
+// 3 methods below enable deleting a row on the table view
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Return NO if you do not want the specified item to be editable.
     return YES;
 }
 
-// Override to support editing the table view.
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
-        [self.companyList removeObjectAtIndex:indexPath.row];
+        [_sharedManager.companyList removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
         //[[NSUserDefaults standardUserDefaults] setObject:self.companyList forKey:@"companyList"];
     }
@@ -118,37 +143,18 @@
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
-    NSString *stringToMove = [self.companyList objectAtIndex:sourceIndexPath.row];
-    [self.companyList removeObjectAtIndex:sourceIndexPath.row];
-    [self.companyList insertObject:stringToMove atIndex:destinationIndexPath.row];
-    
-    
+    NSString *stringToMove = [_sharedManager.companyList objectAtIndex:sourceIndexPath.row];
+    [_sharedManager.companyList removeObjectAtIndex:sourceIndexPath.row];
+    [_sharedManager.companyList insertObject:stringToMove atIndex:destinationIndexPath.row];
 }
 
-// Override to support conditional rearranging of the table view.
+// The 3 methods below enable rearranging of rows on the table view
 - (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Return NO if you do not want the item to be re-orderable.
     return YES;
 }
 
-//- (NSIndexPath *)tableView:(UITableView *)tableView
-//targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath
-//       toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
-//    NSDictionary *section = [self.companyList objectAtIndex:sourceIndexPath.section];
-//    NSUInteger sectionCount = [[section valueForKey:@"content"] count];
-//    if (sourceIndexPath.section != proposedDestinationIndexPath.section) {
-//        NSUInteger rowInSourceSection =
-//        (sourceIndexPath.section > proposedDestinationIndexPath.section) ?
-//        0 : sectionCount - 1;
-//        return [NSIndexPath indexPathForRow:rowInSourceSection inSection:sourceIndexPath.section];
-//    } else if (proposedDestinationIndexPath.row >= sectionCount) {
-//        return [NSIndexPath indexPathForRow:sectionCount - 1 inSection:sourceIndexPath.section];
-//    }
-//    // Allow the proposed destination.
-//    return proposedDestinationIndexPath;
-//}
-
+//you might be able to get rid of this line
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath
 {
     if (proposedDestinationIndexPath.section != sourceIndexPath.section)
@@ -160,21 +166,12 @@
 }
 
 #pragma mark - Table view delegate
-
-// In a xib-based application, navigation from a table can be handled in -tableView:didSelectRowAtIndexPath:
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if (indexPath.row == 0){
-//        self.productViewController.title = @"Apple mobile devices";
-//    } else if (indexPath.row == 1) {
-//        self.productViewController.title = @"Samsung mobile devices";
-//    } else if (indexPath.row == 2) {
-//        self.productViewController.title = @"Google mobile devices";
-//    } else {
-//        self. productViewController.title = @"Amazon mobile devices";
-//    }
-    //this line below changes the index path row instead of hard coding it like above
-    self.productViewController.title = self.companyList[indexPath.row];
+    // Change the index path row in the array so the path to "products" is also rearranged
+    Company *company = [_sharedManager.companyList objectAtIndex:indexPath.row];
+    
+    self.productViewController.currentCompany = company;
     [self.navigationController
         pushViewController:self.productViewController
         animated:YES];
