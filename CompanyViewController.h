@@ -8,14 +8,16 @@
 
 #import <UIKit/UIKit.h>
 #import "DAO.h"
+#import "ItemInputViewController.h"
 
 @class ProductViewController;
+@class ItemInputViewController;
 
 @interface CompanyViewController : UITableViewController
 
 //@property (nonatomic, retain) NSMutableArray *companyList;
-
-@property (nonatomic, retain) IBOutlet  ProductViewController * productViewController;
+@property (nonatomic, retain) IBOutlet  ProductViewController *productViewController;
+@property (nonatomic, retain) IBOutlet  ItemInputViewController *itemInputViewController;
 @property (nonatomic, retain) DAO *sharedManager;
-
+@property (nonatomic, retain) Company *currentCompany;
 @end

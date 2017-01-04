@@ -23,6 +23,10 @@
 		48A656EB18163F8700746D36 /* ProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A656E918163F8700746D36 /* ProductViewController.m */; };
 		48A656EE1816468000746D36 /* Sunflower.gif in Resources */ = {isa = PBXBuildFile; fileRef = 48A656ED1816468000746D36 /* Sunflower.gif */; };
 		C3D482FD1DFF57130052EE89 /* DAO.m in Sources */ = {isa = PBXBuildFile; fileRef = C3D482FC1DFF57130052EE89 /* DAO.m */; };
+		C3D4832C1E009C940052EE89 /* ItemInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3D4832B1E009C940052EE89 /* ItemInputViewController.m */; };
+		C3D4832E1E01B1410052EE89 /* ItemInputViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3D4832D1E01B1410052EE89 /* ItemInputViewController.xib */; };
+		C3D483321E031AE70052EE89 /* ProductInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3D483301E031AE70052EE89 /* ProductInputViewController.m */; };
+		C3D483331E031AE70052EE89 /* ProductInputViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3D483311E031AE70052EE89 /* ProductInputViewController.xib */; };
 		C3E1045C1DF729B600DA664E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C3E1045B1DF729B600DA664E /* Images.xcassets */; };
 		C3E104621DF7495200DA664E /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E104611DF7495200DA664E /* WebViewController.m */; };
 		C3E104641DF75C9C00DA664E /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3E104631DF75C9C00DA664E /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -64,6 +68,12 @@
 		48A656ED1816468000746D36 /* Sunflower.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = Sunflower.gif; sourceTree = "<group>"; };
 		C3D482FB1DFF57130052EE89 /* DAO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAO.h; sourceTree = "<group>"; };
 		C3D482FC1DFF57130052EE89 /* DAO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAO.m; sourceTree = "<group>"; };
+		C3D4832A1E009C940052EE89 /* ItemInputViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ItemInputViewController.h; path = ../ItemInputViewController.h; sourceTree = "<group>"; };
+		C3D4832B1E009C940052EE89 /* ItemInputViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ItemInputViewController.m; path = ../ItemInputViewController.m; sourceTree = "<group>"; };
+		C3D4832D1E01B1410052EE89 /* ItemInputViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = ItemInputViewController.xib; path = ../ItemInputViewController.xib; sourceTree = "<group>"; };
+		C3D4832F1E031AE70052EE89 /* ProductInputViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductInputViewController.h; sourceTree = "<group>"; };
+		C3D483301E031AE70052EE89 /* ProductInputViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductInputViewController.m; sourceTree = "<group>"; };
+		C3D483311E031AE70052EE89 /* ProductInputViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductInputViewController.xib; sourceTree = "<group>"; };
 		C3E1045B1DF729B600DA664E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		C3E104601DF7495200DA664E /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		C3E104611DF7495200DA664E /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
@@ -111,6 +121,9 @@
 		483796CC1BCBF7C70062D5AB /* ParentViewController */ = {
 			isa = PBXGroup;
 			children = (
+				C3D4832A1E009C940052EE89 /* ItemInputViewController.h */,
+				C3D4832B1E009C940052EE89 /* ItemInputViewController.m */,
+				C3D4832D1E01B1410052EE89 /* ItemInputViewController.xib */,
 				48A656E318163C1B00746D36 /* CompanyViewController.h */,
 				48A656E418163C1B00746D36 /* CompanyViewController.m */,
 			);
@@ -120,6 +133,9 @@
 		483796CD1BCBF7EB0062D5AB /* ProductViewController */ = {
 			isa = PBXGroup;
 			children = (
+				C3D4832F1E031AE70052EE89 /* ProductInputViewController.h */,
+				C3D483301E031AE70052EE89 /* ProductInputViewController.m */,
+				C3D483311E031AE70052EE89 /* ProductInputViewController.xib */,
 				48A656E818163F8700746D36 /* ProductViewController.h */,
 				48A656E918163F8700746D36 /* ProductViewController.m */,
 			);
@@ -302,6 +318,8 @@
 			files = (
 				48A656EE1816468000746D36 /* Sunflower.gif in Resources */,
 				C3E1045C1DF729B600DA664E /* Images.xcassets in Resources */,
+				C3D4832E1E01B1410052EE89 /* ItemInputViewController.xib in Resources */,
+				C3D483331E031AE70052EE89 /* ProductInputViewController.xib in Resources */,
 				48A656E718163C1B00746D36 /* CompanyViewController.xib in Resources */,
 				48A656BF18163BF200746D36 /* InfoPlist.strings in Resources */,
 			);
@@ -324,8 +342,10 @@
 			files = (
 				C3E1046B1DF8AECD00DA664E /* Product.m in Sources */,
 				48A656E618163C1B00746D36 /* CompanyViewController.m in Sources */,
+				C3D4832C1E009C940052EE89 /* ItemInputViewController.m in Sources */,
 				C3E104681DF8AEB500DA664E /* Company.m in Sources */,
 				C3E104621DF7495200DA664E /* WebViewController.m in Sources */,
+				C3D483321E031AE70052EE89 /* ProductInputViewController.m in Sources */,
 				C3D482FD1DFF57130052EE89 /* DAO.m in Sources */,
 				48A656C518163BF200746D36 /* NavControllerAppDelegate.m in Sources */,
 				48A656C118163BF200746D36 /* main.m in Sources */,
@@ -404,7 +424,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
@@ -437,7 +457,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = 2;
 				VALIDATE_PRODUCT = YES;
@@ -456,7 +476,7 @@
 				INFOPLIST_FILE = "NavCtrl/NavCtrl-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "qcd.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -473,7 +493,7 @@
 				INFOPLIST_FILE = "NavCtrl/NavCtrl-Info.plist";
 				PRODUCT_BUNDLE_IDENTIFIER = "qcd.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TARGETED_DEVICE_FAMILY = 2;
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

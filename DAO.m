@@ -26,6 +26,8 @@
 }
 
 
+
+
 -(id)init {
 // Initialize Products
     Product *iPad = [[Product alloc]initWithName:@"iPad" andImage:@"apple-xxl.png" andURL:@"http://www.apple.com/ipad/"];
@@ -45,13 +47,13 @@
     Product *kindlePaperWhite = [[Product alloc]initWithName:@"Kindle PaperWhite" andImage:@"amazon.png" andURL:  @"https://www.amazon.com/Amazon-Kindle-Paperwhite-6-Inch-4GB-eReader/dp/B00OQVZDJM"];
     
     // Initialize Companies with Products
-    Company *apple = [[Company alloc]initWithName:@"Apple" andTitle:@"Apple mobile products" andProducts:[[NSMutableArray alloc]initWithObjects:iPad, iPodTouch, iPhone, nil] andImage:@"apple-xxl.png"];
+    Company *apple = [[Company alloc]initWithName:@"Apple" andTicker:@"APPL" andProducts:[[NSMutableArray alloc]initWithObjects:iPad, iPodTouch, iPhone, nil] andImage:@"apple-xxl.png"];
     
-    Company *samsung = [[Company alloc]initWithName:@"Samsung" andTitle:@"Samsung mobile products" andProducts:[[NSMutableArray alloc]initWithObjects:galaxyS4, galaxyNote, galaxyTab, nil] andImage:@"samsung.jpg"];
+    Company *samsung = [[Company alloc]initWithName:@"Samsung" andTicker:@"SSNLF" andProducts:[[NSMutableArray alloc]initWithObjects:galaxyS4, galaxyNote, galaxyTab, nil] andImage:@"samsung.jpg"];
     
-    Company *google = [[Company alloc]initWithName:@"Google" andTitle:@"Google mobile products" andProducts:[[NSMutableArray alloc]initWithObjects:googlePixel, nexus6P, nexus5X, nil] andImage:@"google.png"];
+    Company *google = [[Company alloc]initWithName:@"Google" andTicker:@"GOOG" andProducts:[[NSMutableArray alloc]initWithObjects:googlePixel, nexus6P, nexus5X, nil] andImage:@"google.png"];
     
-    Company *amazon = [[Company alloc]initWithName:@"Amazon" andTitle:@"Amazon mobile devices" andProducts:[[NSMutableArray alloc]initWithObjects:amazonFire, kindleFire, kindlePaperWhite, nil] andImage:@"amazon.png"];
+    Company *amazon = [[Company alloc]initWithName:@"Amazon" andTicker:@"AMZN" andProducts:[[NSMutableArray alloc]initWithObjects:amazonFire, kindleFire, kindlePaperWhite, nil] andImage:@"amazon.png"];
     
     self.companyList = [[NSMutableArray alloc]initWithObjects:apple, samsung, google, amazon, nil];
     return self;

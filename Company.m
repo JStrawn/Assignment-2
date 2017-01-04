@@ -11,11 +11,11 @@
 
 @implementation Company
 -(id)initWithName:(NSString *)name
-        andTitle: (NSString *) title
+        andTicker: (NSString *) ticker
         andProducts: (NSMutableArray*)products
          andImage: (NSString*)photo {
     self.name = name;
-    self.title = title;
+    self.ticker = ticker;
     self.products = products;
     self.photo = photo;
     return self;

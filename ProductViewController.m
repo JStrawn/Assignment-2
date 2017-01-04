@@ -9,6 +9,9 @@
 #import "ProductViewController.h"
 #import "WebViewController.h"
 #import "Product.h"
+#import "Company.h"
+#import "ProductInputViewController.h"
+#import "DAO.h"
 
 @interface ProductViewController ()
 
@@ -29,15 +32,19 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    
     // Preserve selection between presentations.
-     self.clearsSelectionOnViewWillAppear = NO;
- 
+    self.clearsSelectionOnViewWillAppear = NO;
+    
     // Edit Button
-    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addProduct:)];
     
-    // Initialize the products
+    self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:self.editButtonItem, addButton, nil];
     
+    
+    self.sharedManager = [DAO sharedManager];
+    
+    self.tableView.allowsSelectionDuringEditing = YES;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -45,12 +52,14 @@
     //reload the tableview to update currentCompany and displayed products
     [self.tableView reloadData];
     [super viewWillAppear:animated];
+    self.title = self.currentCompany.name;
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
 }
+
 
 #pragma mark - Table view data source
 
@@ -80,7 +89,7 @@
     
     cell.textLabel.text = currentProduct.name;
     [[cell imageView] setImage: [UIImage imageNamed:currentProduct.image]];
-
+    
     return cell;
 }
 
@@ -126,22 +135,36 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here, for example:
-    // Create the next view controller.
-//    <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc]initWithNibName:@"<#Nib name#>" bundle:nil];
     
-    Product* product = [self.currentCompany.products objectAtIndex:[indexPath row]];
-
-    WebViewController *webViewController = [[WebViewController alloc]init];
-    
-    webViewController.title = product.name;
-    
-    //this sets the product property in WebviewController. we already defined product here and we are passing that info on to there when user selects row
-    webViewController.currentProduct = product;
-    
-    
-    // Push the view controller.
-    [self.navigationController pushViewController:webViewController animated:YES];
+    if (tableView.editing == YES) {
+        self.productInputViewController = [[ProductInputViewController alloc]init];
+        //initialize current company again so it carries over
+        self.productInputViewController.currentCompany = self.currentCompany;
+        
+        Product* product = [self.currentCompany.products objectAtIndex:indexPath.row];
+        self.productInputViewController.isEditMode = YES;
+        self.productInputViewController.productToEdit = product;
+        [self.navigationController
+         pushViewController:self.productInputViewController
+         animated:YES];
+    } else {
+        self.productInputViewController = [[ProductInputViewController alloc]init];
+        self.productInputViewController.isEditMode = NO;
+        
+        WebViewController *webViewController = [[WebViewController alloc]init];
+        //initialize current company again so it carries over
+        self.productInputViewController.currentCompany = self.currentCompany;
+        
+        Product* product = [self.currentCompany.products objectAtIndex:indexPath.row];
+        
+        webViewController.title = product.name;
+        
+        //this sets the product property in WebviewController
+        webViewController.currentProduct = product;
+        [self.navigationController
+         pushViewController:webViewController
+         animated:YES];
+    }
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
@@ -157,7 +180,19 @@
     }
 }
 
- 
+- (void)addProduct:sender
+{
+    ProductInputViewController *productInputViewController = [[ProductInputViewController alloc]init];
+    
+    Company *company = self.currentCompany;
+    
+    productInputViewController.currentCompany = company;
+    
+    [self.navigationController
+     pushViewController:productInputViewController
+     animated:YES];
+}
+
 
 
 @end
