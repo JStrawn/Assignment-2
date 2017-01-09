@@ -29,22 +29,31 @@
     return self;
 }
 
+- (void)reloadStockData{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.tableView reloadData];
+    });
+
+    
+}
+
 //#pragma mark Initializing companies and products
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     // Preserve selection between presentations
-     self.clearsSelectionOnViewWillAppear = NO;
- 
+    self.clearsSelectionOnViewWillAppear = NO;
+    
     // Edit Button
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     
     //Add Button
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addItem:)];
     self.navigationItem.leftBarButtonItem = addButton;
-
+    
     self.title = @"Mobile device makers";
     self.sharedManager = [DAO sharedManager];
+    self.sharedManager.reloadDelegate = self;
     
 }
 
@@ -62,6 +71,12 @@
     //self.companyList = [[[NSUserDefaults standardUserDefaults] objectForKey:@"companyList"]mutableCopy];
     [self.tableView reloadData];
     self.itemInputViewController.isEditMode = NO;
+    [self reloadStockData];
+    
+    [NSTimer scheduledTimerWithTimeInterval: 60.0 target: self
+                                   selector: @selector(reloadStockData)
+                                   userInfo: nil
+                                    repeats: YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -89,19 +104,30 @@
     return self.sharedManager.companyList.count;
 }
 
+
+
 // Initialize the cells
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     }
     
     // Configure the cells (Title and Photo)
     Company *currentCompany = [self.sharedManager.companyList objectAtIndex:[indexPath row]];
     cell.textLabel.text = currentCompany.name;
     [[cell imageView] setImage: [UIImage imageNamed:currentCompany.photo]];
+    
+    //cell bottom part, stock value
+    if (currentCompany.stockPrice == nil) {
+        cell.detailTextLabel.text = @"Loading...";
+    } else {
+        cell.detailTextLabel.text = [NSString stringWithFormat:@"%@ - $%@", currentCompany.ticker, currentCompany.stockPrice];
+    }
+    
+    
     return cell;
 }
 
@@ -127,7 +153,7 @@
     }
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
+    }
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
@@ -146,9 +172,9 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Company *company = [self.sharedManager.companyList objectAtIndex:indexPath.row];
-
+    
     if (tableView.editing == YES) {
-
+        
         self.itemInputViewController = [[ItemInputViewController alloc]init];
         self.itemInputViewController.isEditMode = YES;
         self.itemInputViewController.companyToEdit = company;
@@ -157,16 +183,17 @@
          animated:YES];
         
     } else {
-    
-    // Change the index path row in the array so the path to "products" is also rearranged
         
-    self.itemInputViewController.isEditMode = NO;
-    self.productViewController.currentCompany = company;
-    [self.navigationController
-        pushViewController:self.productViewController
-        animated:YES];
+        // Change the index path row in the array so the path to "products" is also rearranged
+        
+        self.itemInputViewController.isEditMode = NO;
+        self.productViewController.currentCompany = company;
+        [self.navigationController
+         pushViewController:self.productViewController
+         animated:YES];
     }
     
 }
+
 
 @end

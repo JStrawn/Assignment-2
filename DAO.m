@@ -47,15 +47,77 @@
     Product *kindlePaperWhite = [[Product alloc]initWithName:@"Kindle PaperWhite" andImage:@"amazon.png" andURL:  @"https://www.amazon.com/Amazon-Kindle-Paperwhite-6-Inch-4GB-eReader/dp/B00OQVZDJM"];
     
     // Initialize Companies with Products
-    Company *apple = [[Company alloc]initWithName:@"Apple" andTicker:@"APPL" andProducts:[[NSMutableArray alloc]initWithObjects:iPad, iPodTouch, iPhone, nil] andImage:@"apple-xxl.png"];
+    Company *apple = [[Company alloc]initWithName:@"Apple" andTicker:@"AAPL" andProducts:[[NSMutableArray alloc]initWithObjects:iPad, iPodTouch, iPhone, nil] andImage:@"apple-xxl.png"];
     
-    Company *samsung = [[Company alloc]initWithName:@"Samsung" andTicker:@"SSNLF" andProducts:[[NSMutableArray alloc]initWithObjects:galaxyS4, galaxyNote, galaxyTab, nil] andImage:@"samsung.jpg"];
+    Company *samsung = [[Company alloc]initWithName:@"Samsung" andTicker:@"SMSD.L" andProducts:[[NSMutableArray alloc]initWithObjects:galaxyS4, galaxyNote, galaxyTab, nil] andImage:@"samsung.jpg"];
     
     Company *google = [[Company alloc]initWithName:@"Google" andTicker:@"GOOG" andProducts:[[NSMutableArray alloc]initWithObjects:googlePixel, nexus6P, nexus5X, nil] andImage:@"google.png"];
     
     Company *amazon = [[Company alloc]initWithName:@"Amazon" andTicker:@"AMZN" andProducts:[[NSMutableArray alloc]initWithObjects:amazonFire, kindleFire, kindlePaperWhite, nil] andImage:@"amazon.png"];
     
     self.companyList = [[NSMutableArray alloc]initWithObjects:apple, samsung, google, amazon, nil];
+    [self loadStockPrices];
+//    [self.reloadDelegate reloadStockData];
     return self;
 }
+
+- (void)loadStockPrices {
+    
+    //using NSURLSession, get csv string with URL
+    //parse the csv and assign the right stock pric to every company;
+    //url is based on all companies in the company list, make sure it deletes from url when you delete a company
+    //loop through companies and add + sign and add all that to url string
+    //when you add a company, append its ticker to the url
+    
+    
+    NSMutableString *companyTickerList = [[NSMutableString alloc]init];
+    NSMutableString *url = [[NSMutableString alloc]init];
+
+    //use fast enum, it's preferred over a i=0; i++ type of loop because it knows where to end
+    for (Company *currentCompany in   self.companyList) {
+        [companyTickerList appendString: currentCompany.ticker];
+        [companyTickerList appendString:@"+"];
+    }
+    
+    //create the url string
+    [url appendString:@"http://finance.yahoo.com/d/quotes.csv?s="];
+    [url appendString:companyTickerList];
+    [url appendString:@"+&f=a"];
+    
+    //if your app is going to get any info from the internet, you HAVE to change the plist file to configure App Transport Security Sessions
+    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    [request setHTTPMethod:@"GET"];
+    [request setURL:[NSURL URLWithString:url]];
+    
+    
+    
+    NSURLSessionDataTask *task =
+    [[NSURLSession sharedSession] dataTaskWithRequest:request
+                                    completionHandler:^(NSData *data,
+                                                        NSURLResponse *response,
+                                                        NSError *error) {
+                                        
+                                        //separate by new line, and get those numbers assigned to each company.stockPrice
+                                        
+                                        NSLog(@"%@", data);
+                                        NSString *dataString = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+                                        NSLog(@"%@", dataString);
+                                        
+                                        NSString *dataStringTrimmed = [dataString stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
+
+                                        NSArray *stockPrices = [dataStringTrimmed componentsSeparatedByString:@"\n"];
+                                        NSLog(@"%@", stockPrices);
+                                        
+                                        int i = 0;
+                                        for (Company *currentCompany in self.companyList) {
+                                                currentCompany.stockPrice = stockPrices[i];
+                                            i++;
+                                        }
+                                        [self.reloadDelegate reloadStockData];
+                                    }];
+    [task resume];
+    
+}
+
+
 @end

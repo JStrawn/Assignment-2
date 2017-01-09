@@ -10,4 +10,6 @@
 
 @protocol DaoDelegate <NSObject>
 
+-(void)reloadStockData;
+
 @end

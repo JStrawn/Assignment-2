@@ -13,7 +13,7 @@
 @class ProductViewController;
 @class ItemInputViewController;
 
-@interface CompanyViewController : UITableViewController
+@interface CompanyViewController : UITableViewController<DaoDelegate>
 
 //@property (nonatomic, retain) NSMutableArray *companyList;
 @property (nonatomic, retain) IBOutlet  ProductViewController *productViewController;

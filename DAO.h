@@ -7,8 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "DaoDelegate.h"
 
 @interface DAO : NSObject
 @property (nonatomic, retain) NSMutableArray *companyList;
 + (id)sharedManager ;
+@property (retain, nonatomic) id<DaoDelegate> reloadDelegate;
+- (void)loadStockPrices;
+
 @end

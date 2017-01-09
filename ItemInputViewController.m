@@ -100,7 +100,7 @@
 
 - (void)didPressButton
 {
-    Company *newCompany = [[Company alloc]initWithName:self.nameTextField.text andTicker:self.nameTextField.text andProducts:[[NSMutableArray alloc]init] andImage:self.imageTextField.text];
+    Company *newCompany = [[Company alloc]initWithName:self.nameTextField.text andTicker:self.tickerTextField.text andProducts:[[NSMutableArray alloc]init] andImage:self.imageTextField.text];
     
     if (self.isEditMode == YES) {
         
@@ -114,6 +114,7 @@
         
         [self.sharedManager.companyList addObject:newCompany];
         [[self navigationController] popViewControllerAnimated:YES];
+        [self.sharedManager loadStockPrices];
     }
 }
 

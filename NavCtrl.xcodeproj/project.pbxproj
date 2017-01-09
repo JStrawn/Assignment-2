@@ -66,6 +66,7 @@
 		48A656E818163F8700746D36 /* ProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProductViewController.h; path = ../ProductViewController.h; sourceTree = "<group>"; };
 		48A656E918163F8700746D36 /* ProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProductViewController.m; path = ../ProductViewController.m; sourceTree = "<group>"; };
 		48A656ED1816468000746D36 /* Sunflower.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = Sunflower.gif; sourceTree = "<group>"; };
+		C39C57701E24252A007683A1 /* DaoDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DaoDelegate.h; sourceTree = "<group>"; };
 		C3D482FB1DFF57130052EE89 /* DAO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAO.h; sourceTree = "<group>"; };
 		C3D482FC1DFF57130052EE89 /* DAO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAO.m; sourceTree = "<group>"; };
 		C3D4832A1E009C940052EE89 /* ItemInputViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ItemInputViewController.h; path = ../ItemInputViewController.h; sourceTree = "<group>"; };
@@ -147,6 +148,7 @@
 			children = (
 				C3D482FB1DFF57130052EE89 /* DAO.h */,
 				C3D482FC1DFF57130052EE89 /* DAO.m */,
+				C39C57701E24252A007683A1 /* DaoDelegate.h */,
 				C3E104661DF8AEB500DA664E /* Company.h */,
 				C3E104671DF8AEB500DA664E /* Company.m */,
 				C3E104691DF8AECD00DA664E /* Product.h */,
