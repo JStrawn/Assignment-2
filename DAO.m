@@ -148,12 +148,14 @@
 
 -(void)createManagedCompany:(Company*)company
 {
-    ManagedCompany *c = [[ManagedCompany alloc]init];
+    ManagedCompany *c = [NSEntityDescription insertNewObjectForEntityForName:@"ManagedCompany" inManagedObjectContext:self.managedObjectContext];
     c.name = company.name;
     c.ticker = company.ticker;
     c.imageUrl = company.imageURL;
     
     [self.managedCompanies addObject:c];
+    [self saveChanges];
+
 }
 
 -(void)editManagedCompany:(Company*)comp
@@ -168,6 +170,18 @@
     
     
 }
+
+//-(void)addManagedCompany:(Company*)comp
+//{    
+//    ManagedCompany *mcToAdd = [[ManagedCompany alloc]initwith];
+//    mcToAdd.name = comp.name;
+//    mcToAdd.ticker = comp.ticker;
+//    mcToAdd.imageUrl = comp.imageURL;
+//    [self.managedCompanies addObject:comp];
+//    [self saveChanges];
+//    
+//    
+//}
 
 -(void)loadAllCompanies
 {

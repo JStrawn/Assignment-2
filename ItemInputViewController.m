@@ -121,8 +121,7 @@
             //DAO Method thatedits the corresponding company in managedcompany array
             //ex. [DAO editCompany:self.companyToEdit];
         
-            DAO *test = [DAO sharedManager];
-            [test editManagedCompany:self.companyToEdit];
+            [self.sharedManager editManagedCompany:self.companyToEdit];
             
             [self.navigationController popViewControllerAnimated:YES];
         
@@ -130,8 +129,12 @@
         Company *newCompany = [[Company alloc]initWithName:self.nameTextField.text andTicker:self.tickerTextField.text andProducts:[[NSMutableArray alloc]init] andImage:self.imageTextField.text];
         
         [self.sharedManager.companyList addObject:newCompany];
+        
         //make a DAO method you call here to create and add the same managed company
         //ex. [DAO addCompany:newCompany]; creates managed company based on basic company
+        
+        [self.sharedManager createManagedCompany:newCompany];
+        
         [[self navigationController] popViewControllerAnimated:YES];
         [self.sharedManager loadStockPrices];
         

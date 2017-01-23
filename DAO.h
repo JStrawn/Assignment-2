@@ -32,5 +32,6 @@
 @property (retain, nonatomic) id<DaoDelegate> reloadDelegate;
 - (void)loadStockPrices;
 -(void)editManagedCompany:(Company*)comp;
+-(void)createManagedCompany:(Company*)comp;
 
 @end
