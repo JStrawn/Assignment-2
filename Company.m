@@ -13,11 +13,11 @@
 -(id)initWithName:(NSString *)name
         andTicker: (NSString *) ticker
         andProducts: (NSMutableArray*)products
-         andImage: (NSString*)photo {
+         andImage: (NSString*)imageURL {
     self.name = name;
     self.ticker = ticker;
     self.products = products;
-    self.photo = photo;
+    self.imageURL = imageURL;
     return self;
 }
 @end

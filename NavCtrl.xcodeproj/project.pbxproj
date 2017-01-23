@@ -22,12 +22,14 @@
 		48A656E718163C1B00746D36 /* CompanyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A656E518163C1B00746D36 /* CompanyViewController.xib */; };
 		48A656EB18163F8700746D36 /* ProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A656E918163F8700746D36 /* ProductViewController.m */; };
 		48A656EE1816468000746D36 /* Sunflower.gif in Resources */ = {isa = PBXBuildFile; fileRef = 48A656ED1816468000746D36 /* Sunflower.gif */; };
+		C39C57781E259900007683A1 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C39C57771E259900007683A1 /* CoreData.framework */; };
+		C39C577C1E26E476007683A1 /* CoreDataHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C39C577B1E26E476007683A1 /* CoreDataHelper.m */; };
+		C3B3D1751E26F56700F19C7B /* DataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = C3B3D1731E26F56700F19C7B /* DataModel.xcdatamodeld */; };
 		C3D482FD1DFF57130052EE89 /* DAO.m in Sources */ = {isa = PBXBuildFile; fileRef = C3D482FC1DFF57130052EE89 /* DAO.m */; };
 		C3D4832C1E009C940052EE89 /* ItemInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3D4832B1E009C940052EE89 /* ItemInputViewController.m */; };
 		C3D4832E1E01B1410052EE89 /* ItemInputViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3D4832D1E01B1410052EE89 /* ItemInputViewController.xib */; };
 		C3D483321E031AE70052EE89 /* ProductInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3D483301E031AE70052EE89 /* ProductInputViewController.m */; };
 		C3D483331E031AE70052EE89 /* ProductInputViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C3D483311E031AE70052EE89 /* ProductInputViewController.xib */; };
-		C3E1045C1DF729B600DA664E /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C3E1045B1DF729B600DA664E /* Images.xcassets */; };
 		C3E104621DF7495200DA664E /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E104611DF7495200DA664E /* WebViewController.m */; };
 		C3E104641DF75C9C00DA664E /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3E104631DF75C9C00DA664E /* WebKit.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		C3E104681DF8AEB500DA664E /* Company.m in Sources */ = {isa = PBXBuildFile; fileRef = C3E104671DF8AEB500DA664E /* Company.m */; };
@@ -67,6 +69,10 @@
 		48A656E918163F8700746D36 /* ProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProductViewController.m; path = ../ProductViewController.m; sourceTree = "<group>"; };
 		48A656ED1816468000746D36 /* Sunflower.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = Sunflower.gif; sourceTree = "<group>"; };
 		C39C57701E24252A007683A1 /* DaoDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DaoDelegate.h; sourceTree = "<group>"; };
+		C39C57771E259900007683A1 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		C39C577A1E26E476007683A1 /* CoreDataHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CoreDataHelper.h; path = ../CoreDataHelper.h; sourceTree = "<group>"; };
+		C39C577B1E26E476007683A1 /* CoreDataHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CoreDataHelper.m; path = ../CoreDataHelper.m; sourceTree = "<group>"; };
+		C3B3D1741E26F56700F19C7B /* DataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = DataModel.xcdatamodel; sourceTree = "<group>"; };
 		C3D482FB1DFF57130052EE89 /* DAO.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DAO.h; sourceTree = "<group>"; };
 		C3D482FC1DFF57130052EE89 /* DAO.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DAO.m; sourceTree = "<group>"; };
 		C3D4832A1E009C940052EE89 /* ItemInputViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ItemInputViewController.h; path = ../ItemInputViewController.h; sourceTree = "<group>"; };
@@ -75,7 +81,6 @@
 		C3D4832F1E031AE70052EE89 /* ProductInputViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductInputViewController.h; sourceTree = "<group>"; };
 		C3D483301E031AE70052EE89 /* ProductInputViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductInputViewController.m; sourceTree = "<group>"; };
 		C3D483311E031AE70052EE89 /* ProductInputViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductInputViewController.xib; sourceTree = "<group>"; };
-		C3E1045B1DF729B600DA664E /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		C3E104601DF7495200DA664E /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		C3E104611DF7495200DA664E /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		C3E104631DF75C9C00DA664E /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
@@ -90,6 +95,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C39C57781E259900007683A1 /* CoreData.framework in Frameworks */,
 				C3E104641DF75C9C00DA664E /* WebKit.framework in Frameworks */,
 				48A656B718163BF200746D36 /* CoreGraphics.framework in Frameworks */,
 				48A656B918163BF200746D36 /* UIKit.framework in Frameworks */,
@@ -146,6 +152,7 @@
 		48A656A818163BF200746D36 = {
 			isa = PBXGroup;
 			children = (
+				C39C57791E26E3C8007683A1 /* Generic Core Data Classes */,
 				C3D482FB1DFF57130052EE89 /* DAO.h */,
 				C3D482FC1DFF57130052EE89 /* DAO.m */,
 				C39C57701E24252A007683A1 /* DaoDelegate.h */,
@@ -172,6 +179,7 @@
 		48A656B318163BF200746D36 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C39C57771E259900007683A1 /* CoreData.framework */,
 				C3E104631DF75C9C00DA664E /* WebKit.framework */,
 				48A656B418163BF200746D36 /* Foundation.framework */,
 				48A656B618163BF200746D36 /* CoreGraphics.framework */,
@@ -184,12 +192,12 @@
 		48A656BA18163BF200746D36 /* NavCtrl */ = {
 			isa = PBXGroup;
 			children = (
+				C3B3D1731E26F56700F19C7B /* DataModel.xcdatamodeld */,
 				483796CB1BCBF7A00062D5AB /* AppDelegate */,
 				483796CC1BCBF7C70062D5AB /* ParentViewController */,
 				483796CD1BCBF7EB0062D5AB /* ProductViewController */,
 				C3E104651DF8AD5D00DA664E /* WebViewController */,
 				48A656E518163C1B00746D36 /* CompanyViewController.xib */,
-				C3E1045B1DF729B600DA664E /* Images.xcassets */,
 				48A656BB18163BF200746D36 /* Supporting Files */,
 			);
 			path = NavCtrl;
@@ -223,6 +231,16 @@
 				48A656D618163BF200746D36 /* InfoPlist.strings */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C39C57791E26E3C8007683A1 /* Generic Core Data Classes */ = {
+			isa = PBXGroup;
+			children = (
+				C39C577A1E26E476007683A1 /* CoreDataHelper.h */,
+				C39C577B1E26E476007683A1 /* CoreDataHelper.m */,
+			);
+			name = "Generic Core Data Classes";
+			path = NavCtrl;
 			sourceTree = "<group>";
 		};
 		C3E104651DF8AD5D00DA664E /* WebViewController */ = {
@@ -319,7 +337,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				48A656EE1816468000746D36 /* Sunflower.gif in Resources */,
-				C3E1045C1DF729B600DA664E /* Images.xcassets in Resources */,
 				C3D4832E1E01B1410052EE89 /* ItemInputViewController.xib in Resources */,
 				C3D483331E031AE70052EE89 /* ProductInputViewController.xib in Resources */,
 				48A656E718163C1B00746D36 /* CompanyViewController.xib in Resources */,
@@ -347,9 +364,11 @@
 				C3D4832C1E009C940052EE89 /* ItemInputViewController.m in Sources */,
 				C3E104681DF8AEB500DA664E /* Company.m in Sources */,
 				C3E104621DF7495200DA664E /* WebViewController.m in Sources */,
+				C39C577C1E26E476007683A1 /* CoreDataHelper.m in Sources */,
 				C3D483321E031AE70052EE89 /* ProductInputViewController.m in Sources */,
 				C3D482FD1DFF57130052EE89 /* DAO.m in Sources */,
 				48A656C518163BF200746D36 /* NavControllerAppDelegate.m in Sources */,
+				C3B3D1751E26F56700F19C7B /* DataModel.xcdatamodeld in Sources */,
 				48A656C118163BF200746D36 /* main.m in Sources */,
 				48A656EB18163F8700746D36 /* ProductViewController.m in Sources */,
 			);
@@ -476,6 +495,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NavCtrl/NavCtrl-Prefix.pch";
 				INFOPLIST_FILE = "NavCtrl/NavCtrl-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "qcd.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -493,6 +513,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "NavCtrl/NavCtrl-Prefix.pch";
 				INFOPLIST_FILE = "NavCtrl/NavCtrl-Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "@executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "qcd.${PRODUCT_NAME:rfc1034identifier}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -573,6 +594,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		C3B3D1731E26F56700F19C7B /* DataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				C3B3D1741E26F56700F19C7B /* DataModel.xcdatamodel */,
+			);
+			currentVersion = C3B3D1741E26F56700F19C7B /* DataModel.xcdatamodel */;
+			name = DataModel.xcdatamodeld;
+			path = ../DataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 48A656A918163BF200746D36 /* Project object */;
 }

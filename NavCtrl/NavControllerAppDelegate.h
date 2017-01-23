@@ -7,11 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CoreDataHelper.h"
+#import "CompanyViewController.h"
+
 
 @interface NavControllerAppDelegate : UIResponder <UIApplicationDelegate>
-
 @property (strong, nonatomic) UIWindow *window;
+//@property (nonatomic, strong, readonly) CoreDataHelper *coreDataHelper;
+@property (readonly, strong) NSPersistentContainer *persistentContainer;
+@property (strong, nonatomic) CompanyViewController *viewController;
 
-@property (strong, nonatomic) UINavigationController *navigationController;
+
+- (void)saveContext;
 
 @end
+
+

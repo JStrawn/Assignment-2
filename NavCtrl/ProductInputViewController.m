@@ -27,6 +27,7 @@
     
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(didPressButton)];
     self.navigationItem.rightBarButtonItem = rightButton;
+    
 }
 
 -(void)viewDidAppear:(BOOL)animated
@@ -125,9 +126,9 @@
 -(void)keyboardWillShow {
     // Animate the current view out of the way
     [UIView animateWithDuration:0.3f animations:^ {
-        self.nameTextField.frame = CGRectMake(75, 100, 170, 30);
-        self.imageTextField.frame = CGRectMake(75, 135, 170, 30);
-        self.urlTextField.frame = CGRectMake(75, 170, 170, 30);
+        self.nameTextField.frame = CGRectMake(75, 55, 170, 30);
+        self.imageTextField.frame = CGRectMake(75, 90, 170, 30);
+        self.urlTextField.frame = CGRectMake(75, 125, 170, 30);
         
     }];
 }

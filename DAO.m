@@ -11,8 +11,9 @@
 #import "Company.h"
 
 @implementation DAO
-//se;lf.dao.company is eventually how i'm going to get company list
+//self.dao.company is eventually how i'm going to get company list
 //
+
 
 
 //ensures ONLY ONE DAO INSTANCE IS CREATED EVER;
@@ -26,39 +27,30 @@
 }
 
 
+-(id)init
+{
+    [self initializeCoreData];
 
-
--(id)init {
-// Initialize Products
-    Product *iPad = [[Product alloc]initWithName:@"iPad" andImage:@"apple-xxl.png" andURL:@"http://www.apple.com/ipad/"];
-    Product *iPodTouch = [[Product alloc]initWithName:@"iPod Touch" andImage:@"apple-xxl.png" andURL:@"http://www.apple.com/ipod-touch/"];
-    Product *iPhone = [[Product alloc]initWithName:@"iPhone" andImage:@"apple-xxl.png" andURL:@"http://www.apple.com/iphone-7/"];
+    static NSString* const hasRunAppOnceKey = @"hasRunAppOnceKey";
+    NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
     
-    Product *galaxyS4 = [[Product alloc]initWithName:@"Galaxy S4" andImage:@"samsung.jpg" andURL:@"http://www.samsung.com/us/mobile/phones/galaxy-s/samsung-galaxy-s4-verizon-white-frost-16gb-sch-i545zwavzw/"];
-    Product *galaxyNote = [[Product alloc]initWithName:@"Galaxy Note" andImage:@"samsung.jpg" andURL:@"http://www.samsung.com/us/mobile/phones/galaxy-note/samsung-galaxy-note5-32gb-at-t-black-sapphire-sm-n920azkaatt/"];
-    Product *galaxyTab = [[Product alloc]initWithName:@"Galaxy Tab" andImage:@"samsung.jpg" andURL:@"http://www.samsung.com/us/mobile/tablets/galaxy-tab-s2/sm-t713-sm-t713nzkexar/"];
+    //if app hasn't run before, init these default objects & add them to core data
+    if ([defaults boolForKey:hasRunAppOnceKey] == NO)
+    {
+        [self loadStockCompanies];
+        //save these changes to the core data
+        [self saveChanges];
+        
+        [defaults setBool:YES forKey:hasRunAppOnceKey];
+    } else {
+        
+        [self loadAllCompanies];
+    }
     
-    Product *googlePixel = [[Product alloc]initWithName:@"Google Pixel" andImage:@"google.png" andURL:@"https://madeby.google.com/phone/"];
-    Product *nexus6P = [[Product alloc]initWithName:@"Nexus 6P" andImage:@"google.png" andURL:@"https://www.google.com/nexus/6p/"];
-    Product *nexus5X = [[Product alloc]initWithName:@"Nexus 5X" andImage:@"google.png" andURL:@"https://www.google.com/nexus/5x/"];
-    
-    Product *amazonFire = [[Product alloc]initWithName:@"Amazon Fire Phone" andImage:@"amazon.png" andURL:@"https://www.amazon.com/Amazon-Fire-Phone-32GB-Unlocked/dp/B00OC0USA6"];
-    Product *kindleFire = [[Product alloc]initWithName:@"Kindle Fire" andImage:@"amazon.png" andURL: @"https://www.amazon.com/Amazon-Fire-7-Inch-Tablet-8GB/dp/B00TSUGXKE"];
-    Product *kindlePaperWhite = [[Product alloc]initWithName:@"Kindle PaperWhite" andImage:@"amazon.png" andURL:  @"https://www.amazon.com/Amazon-Kindle-Paperwhite-6-Inch-4GB-eReader/dp/B00OQVZDJM"];
-    
-    // Initialize Companies with Products
-    Company *apple = [[Company alloc]initWithName:@"Apple" andTicker:@"AAPL" andProducts:[[NSMutableArray alloc]initWithObjects:iPad, iPodTouch, iPhone, nil] andImage:@"apple-xxl.png"];
-    
-    Company *samsung = [[Company alloc]initWithName:@"Samsung" andTicker:@"SMSD.L" andProducts:[[NSMutableArray alloc]initWithObjects:galaxyS4, galaxyNote, galaxyTab, nil] andImage:@"samsung.jpg"];
-    
-    Company *google = [[Company alloc]initWithName:@"Google" andTicker:@"GOOG" andProducts:[[NSMutableArray alloc]initWithObjects:googlePixel, nexus6P, nexus5X, nil] andImage:@"google.png"];
-    
-    Company *amazon = [[Company alloc]initWithName:@"Amazon" andTicker:@"AMZN" andProducts:[[NSMutableArray alloc]initWithObjects:amazonFire, kindleFire, kindlePaperWhite, nil] andImage:@"amazon.png"];
-    
-    self.companyList = [[NSMutableArray alloc]initWithObjects:apple, samsung, google, amazon, nil];
     [self loadStockPrices];
-//    [self.reloadDelegate reloadStockData];
     return self;
+    
+    //save all
 }
 
 - (void)loadStockPrices {
@@ -118,6 +110,161 @@
     [task resume];
     
 }
+
+
+
+- (void)initializeCoreData
+{
+    NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"DataModel" withExtension:@"momd"];
+    NSManagedObjectModel *mom = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+    NSAssert(mom != nil, @"Error initializing Managed Object Model");
+    
+    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mom];
+    NSManagedObjectContext *moc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    [moc setPersistentStoreCoordinator:psc];
+    //set moc as a DAO property
+    [self setManagedObjectContext:moc];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSURL *documentsURL = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+    NSURL *storeURL = [documentsURL URLByAppendingPathComponent:@"DataModel.sqlite"];
+    
+    dispatch_async(dispatch_get_global_queue( DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^(void) {
+        NSError *error = nil;
+        NSPersistentStoreCoordinator *psc = [[self managedObjectContext] persistentStoreCoordinator];
+        NSPersistentStore *store = [psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error];
+        NSAssert(store != nil, @"Error initializing PSC: %@\n%@", [error localizedDescription], [error userInfo]);
+    });
+}
+
+-(void) saveChanges
+{
+    NSError *err = nil;
+    BOOL successful = [self.managedObjectContext save:&err];
+    if(!successful){
+        NSLog(@"Error saving: %@", [err localizedDescription]);
+    }
+    NSLog(@"Data Saved");
+}
+
+-(void)createManagedCompany:(Company*)company
+{
+    ManagedCompany *c = [[ManagedCompany alloc]init];
+    c.name = company.name;
+    c.ticker = company.ticker;
+    c.imageUrl = company.imageURL;
+    
+    [self.managedCompanies addObject:c];
+}
+
+-(void)editManagedCompany:(Company*)comp
+{
+    NSUInteger index = [self.companyList indexOfObject:comp];
+    ManagedCompany *mcToEdit = [self.managedCompanies objectAtIndex:index];
+    mcToEdit.name = comp.name;
+    mcToEdit.ticker = comp.ticker;
+    //mcToEdit.products = comp.products;
+    mcToEdit.imageUrl = comp.imageURL;
+    [self saveChanges];
+    
+    
+}
+
+-(void)loadAllCompanies
+{
+    NSFetchRequest *companyRequest = [[NSFetchRequest alloc]initWithEntityName:@"ManagedCompany"];
+    NSArray *fetchedCompanies = [self.managedObjectContext executeFetchRequest:companyRequest error:nil];
+    self.companyList = [[NSMutableArray alloc]init];
+    self.managedCompanies = [[NSMutableArray alloc] init];
+    
+    //now you have to turn fetchedcompanies into regular companies by enumeration and put them in company list property
+    
+    for (ManagedCompany *currentManagedCompany in fetchedCompanies) {
+        
+        Company *c = [[Company alloc]initWithName:currentManagedCompany.name andTicker:currentManagedCompany.ticker andProducts:[[NSMutableArray alloc]init] andImage:currentManagedCompany.imageUrl];
+        
+        
+        
+        for (ManagedProduct *currentManagedProduct in currentManagedCompany.products) {
+            //make managed products and set them to "c"
+            Product *p = [[Product alloc]initWithName:currentManagedProduct.name andImage:currentManagedProduct.image andURL:currentManagedProduct.url];
+            //add products to the companys products array
+            [c.products addObject:p];
+            
+            //add this object you created to an array of Managed Companies
+
+       
+
+        }
+        [self.managedCompanies addObject:currentManagedCompany];
+        [self.companyList addObject:c];
+
+    
+//    for (Company *currentCompany in self.managedCompanies) {
+
+        
+        
+      //  }
+    }
+
+}
+
+-(void)loadStockCompanies
+{
+    // Initialize Products
+    
+    Product *iPad = [[Product alloc]initWithName:@"iPad" andImage:@"apple-xxl.png" andURL:@"http://www.apple.com/ipad/"];
+    Product *iPodTouch = [[Product alloc]initWithName:@"iPod Touch" andImage:@"apple-xxl.png" andURL:@"http://www.apple.com/ipod-touch/"];
+    Product *iPhone = [[Product alloc]initWithName:@"iPhone" andImage:@"apple-xxl.png" andURL:@"http://www.apple.com/iphone-7/"];
+    
+    Product *galaxyS4 = [[Product alloc]initWithName:@"Galaxy S4" andImage:@"samsung.jpg" andURL:@"http://www.samsung.com/us/mobile/phones/galaxy-s/samsung-galaxy-s4-verizon-white-frost-16gb-sch-i545zwavzw/"];
+    Product *galaxyNote = [[Product alloc]initWithName:@"Galaxy Note" andImage:@"samsung.jpg" andURL:@"http://www.samsung.com/us/mobile/phones/galaxy-note/samsung-galaxy-note5-32gb-at-t-black-sapphire-sm-n920azkaatt/"];
+    Product *galaxyTab = [[Product alloc]initWithName:@"Galaxy Tab" andImage:@"samsung.jpg" andURL:@"http://www.samsung.com/us/mobile/tablets/galaxy-tab-s2/sm-t713-sm-t713nzkexar/"];
+    
+    Product *googlePixel = [[Product alloc]initWithName:@"Google Pixel" andImage:@"google.png" andURL:@"https://madeby.google.com/phone/"];
+    Product *nexus6P = [[Product alloc]initWithName:@"Nexus 6P" andImage:@"google.png" andURL:@"https://www.google.com/nexus/6p/"];
+    Product *nexus5X = [[Product alloc]initWithName:@"Nexus 5X" andImage:@"google.png" andURL:@"https://www.google.com/nexus/5x/"];
+    
+    Product *amazonFire = [[Product alloc]initWithName:@"Amazon Fire Phone" andImage:@"amazon.png" andURL:@"https://www.amazon.com/Amazon-Fire-Phone-32GB-Unlocked/dp/B00OC0USA6"];
+    Product *kindleFire = [[Product alloc]initWithName:@"Kindle Fire" andImage:@"amazon.png" andURL: @"https://www.amazon.com/Amazon-Fire-7-Inch-Tablet-8GB/dp/B00TSUGXKE"];
+    Product *kindlePaperWhite = [[Product alloc]initWithName:@"Kindle PaperWhite" andImage:@"amazon.png" andURL:  @"https://www.amazon.com/Amazon-Kindle-Paperwhite-6-Inch-4GB-eReader/dp/B00OQVZDJM"];
+    
+    // Initialize Companies with Products
+    Company *apple = [[Company alloc]initWithName:@"Apple" andTicker:@"AAPL" andProducts:[[NSMutableArray alloc]initWithObjects:iPad, iPodTouch, iPhone, nil] andImage:@"http://www.iconsdb.com/icons/preview/gray/apple-xxl.png"];
+    
+    Company *samsung = [[Company alloc]initWithName:@"Samsung" andTicker:@"SMSD.L" andProducts:[[NSMutableArray alloc]initWithObjects:galaxyS4, galaxyNote, galaxyTab, nil] andImage:@"http://www.iconsdb.com/icons/preview/navy-blue/samsung-xxl.png"];
+    
+    Company *google = [[Company alloc]initWithName:@"Google" andTicker:@"GOOG" andProducts:[[NSMutableArray alloc]initWithObjects:googlePixel, nexus6P, nexus5X, nil] andImage:@"https://static1.squarespace.com/static/51fc83aee4b098462d56852b/t/55fb3729e4b04875be34a101/1442527018402/?format=100w"];
+    
+    Company *amazon = [[Company alloc]initWithName:@"Amazon" andTicker:@"AMZN" andProducts:[[NSMutableArray alloc]initWithObjects:amazonFire, kindleFire, kindlePaperWhite, nil] andImage:@"http://www.iconarchive.com/download/i80413/uiconstock/socialmedia/Amazon.ico"];
+    
+    
+    self.companyList = [[NSMutableArray alloc]initWithObjects:apple, samsung, google, amazon, nil];
+    
+    for (Company *currentCompany in self.companyList) {
+        //make managed companies for every company
+        //add a nested loop to alloc create a managed company in this new list
+        
+        ManagedCompany *c = [NSEntityDescription insertNewObjectForEntityForName:@"ManagedCompany" inManagedObjectContext:self.managedObjectContext];
+        c.name = currentCompany.name;
+        c.ticker = currentCompany.ticker;
+        c.imageUrl = currentCompany.imageURL;
+        
+        for (Product *currentProduct in currentCompany.products) {
+            //make managed products and set them to "c"
+            ManagedProduct *p = [NSEntityDescription insertNewObjectForEntityForName:@"ManagedProduct" inManagedObjectContext:self.managedObjectContext];
+            p.name = currentProduct.name;
+            p.image = currentProduct.image;
+            p.url = currentProduct.url;
+            //add products to the companys products array
+            [c addProductsObject:p];
+
+        }
+        //add this object you created to an array of Managed Companies
+        [self.managedCompanies addObject:c];
+    }
+
+}
+
 
 
 @end

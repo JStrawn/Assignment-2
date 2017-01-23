@@ -159,6 +159,8 @@
         
         webViewController.title = product.name;
         
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:nil];
+        
         //this sets the product property in WebviewController
         webViewController.currentProduct = product;
         [self.navigationController
@@ -187,6 +189,8 @@
     Company *company = self.currentCompany;
     
     productInputViewController.currentCompany = company;
+    
+    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:nil];
     
     [self.navigationController
      pushViewController:productInputViewController

@@ -51,9 +51,21 @@
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addItem:)];
     self.navigationItem.leftBarButtonItem = addButton;
     
-    self.title = @"Mobile device makers";
+    //Title and Color
+    self.title = @"Stock Tracker";
+    self.navigationController.navigationBar.barTintColor = [UIColor colorWithRed:0.18 green:0.80 blue:0.44 alpha:1.0];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    [self.navigationController.navigationBar
+     setTitleTextAttributes:@{NSForegroundColorAttributeName : [UIColor whiteColor]}];
+    self.navigationController.navigationBar.translucent = NO;
+    
+    //Load shared manager for companies
     self.sharedManager = [DAO sharedManager];
     self.sharedManager.reloadDelegate = self;
+    
+    //core-data
+    [self initModelContext];
+//    [self loadAllCompanies];
     
 }
 
@@ -118,7 +130,9 @@
     // Configure the cells (Title and Photo)
     Company *currentCompany = [self.sharedManager.companyList objectAtIndex:[indexPath row]];
     cell.textLabel.text = currentCompany.name;
-    [[cell imageView] setImage: [UIImage imageNamed:currentCompany.photo]];
+    
+    UIImage *companyIcon = [self getImageFromURL:currentCompany.imageURL];
+    cell.imageView.image = companyIcon;
     
     //cell bottom part, stock value
     if (currentCompany.stockPrice == nil) {
@@ -144,12 +158,17 @@
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+
+
+
 {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         // Delete the row from the data source
         [self.sharedManager.companyList removeObjectAtIndex:indexPath.row];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        //[[NSUserDefaults standardUserDefaults] setObject:self.companyList forKey:@"companyList"];
+
+        [context deleteObject:[self.sharedManager.managedCompanies objectAtIndex:indexPath.row]];
+
     }
     else if (editingStyle == UITableViewCellEditingStyleInsert) {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
@@ -188,12 +207,66 @@
         
         self.itemInputViewController.isEditMode = NO;
         self.productViewController.currentCompany = company;
+        
+        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:nil];
+
         [self.navigationController
          pushViewController:self.productViewController
          animated:YES];
     }
     
 }
+
+-(UIImage *) getImageFromURL:(NSString *)fileURL {
+    UIImage * result;
+    
+    NSData * data = [NSData dataWithContentsOfURL:[NSURL URLWithString:fileURL]];
+    result = [UIImage imageWithData:data];
+    
+    return result;
+}
+
+-(void)initModelContext
+{
+    model = [NSManagedObjectModel mergedModelFromBundles:nil];
+    NSPersistentStoreCoordinator *psc =
+    [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:model];
+    NSString *path = [self archivePath];
+    NSURL *storeURL = [NSURL fileURLWithPath:path];
+    NSError *error = nil;
+    if(![psc addPersistentStoreWithType:NSSQLiteStoreType configuration:nil URL:storeURL options:nil error:&error]){
+        [NSException raise:@"Open failed" format:@"Reason: %@", [error localizedDescription]];
+    }
+    context = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    [context setPersistentStoreCoordinator:psc];
+    [context setUndoManager:nil];
+}
+
+-(NSString*) archivePath
+{
+    NSArray *documentsDirectories = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [documentsDirectories objectAtIndex:0];
+    return [documentsDirectory stringByAppendingPathComponent:@"store.data"];
+}
+
+//-(void) loadAllCompanies
+//{
+//    if(!self.sharedManager.companyList){
+//        NSFetchRequest *request = [[NSFetchRequest alloc]init];
+//        //NSPredicate *p = [NSPredicate predicateWithFormat:@"emp_id >1"];
+//        //[request setPredicate:p];
+//        NSEntityDescription *e = [[model entitiesByName] objectForKey:@"Employee"];
+//        [request setEntity:e];
+//        NSError *error = nil;
+//        NSArray *result = [context executeFetchRequest:request error:&error];
+//        if(!result){
+//            [NSException raise:@"Fetch Failed" format:@"Reason: %@", [error localizedDescription]];
+//        }
+//        self.sharedManager.companyList = [[NSMutableArray alloc]initWithArray:result];
+//        NSLog(@"Employees Count %lu", (unsigned long)[self.sharedManager.companyList count]);
+//    }
+//    [self.tableView reloadData];
+//}
 
 
 @end
