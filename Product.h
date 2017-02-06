@@ -11,6 +11,7 @@
 @interface Product : NSObject
 
 //name, weburl (string), and image (string)
+//@property (strong, nonatomic) NSString* productID;
 @property (strong, nonatomic) NSString* name;
 @property (strong, nonatomic) NSString* image;
 @property (strong, nonatomic) NSString* url;

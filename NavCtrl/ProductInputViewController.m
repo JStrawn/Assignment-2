@@ -7,6 +7,7 @@
 //
 
 #import "ProductInputViewController.h"
+#import <Quartzcore/Quartzcore.h>
 #import "Product.h"
 #import "Company.h"
 #import "DAO.h"
@@ -22,13 +23,25 @@
     [super viewDidLoad];
     
     self.sharedManager = [DAO sharedManager];
-
-    self.title = @"Create a New Product";
     
+    self.title = @"Create a New Product";
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(didPressButton)];
     self.navigationItem.rightBarButtonItem = rightButton;
     
 }
+
+-(void)SetTextFieldBorder :(UITextField *)textField{
+    
+    CALayer *border = [CALayer layer];
+    CGFloat borderWidth = 2;
+    border.borderColor = [UIColor grayColor].CGColor;
+    border.frame = CGRectMake(0, textField.frame.size.height - borderWidth, textField.frame.size.width, textField.frame.size.height);
+    border.borderWidth = borderWidth;
+    [textField.layer addSublayer:border];
+    textField.layer.masksToBounds = YES;
+    
+}
+
 
 -(void)viewDidAppear:(BOOL)animated
 {
@@ -36,28 +49,36 @@
     
     CGRect frm = self.view.frame;
     
-    self.nameTextField = [[UITextField alloc]initWithFrame:CGRectMake(frm.size.width/4, frm.size.height/3, ((self.view.frame.size.width)/2), 30)];
-    self.nameTextField.borderStyle = UITextBorderStyleRoundedRect;
+    self.nameTextField = [[UITextField alloc]initWithFrame:CGRectMake(frm.size.width/6, frm.size.height/3, ((self.view.frame.size.width)/1.5), 30)];
+    self.nameTextField.borderStyle = UITextBorderStyleNone;
     self.nameTextField.returnKeyType = UIReturnKeyDone;
     self.nameTextField.delegate = self;
+    self.nameTextField.textAlignment = NSTextAlignmentCenter;
+    [self SetTextFieldBorder:self.nameTextField];
     
-    self.imageTextField = [[UITextField alloc]initWithFrame:CGRectMake(frm.size.width/4, frm.size.height/2.3, ((self.view.frame.size.width)/2), 30)];
-    self.imageTextField.borderStyle = UITextBorderStyleRoundedRect;
+    self.imageTextField = [[UITextField alloc]initWithFrame:CGRectMake(frm.size.width/6, frm.size.height/2.3, ((self.view.frame.size.width)/1.5), 30)];
+    self.imageTextField.borderStyle = UITextBorderStyleNone;
     self.imageTextField.returnKeyType = UIReturnKeyDone;
     self.imageTextField.delegate = self;
+    self.imageTextField.textAlignment = NSTextAlignmentCenter;
+    [self SetTextFieldBorder:self.imageTextField];
+
     
-    self.urlTextField = [[UITextField alloc]initWithFrame:CGRectMake(frm.size.width/4, frm.size.height/1.85, ((self.view.frame.size.width)/2), 30)];
-    self.urlTextField.borderStyle = UITextBorderStyleRoundedRect;
+    self.urlTextField = [[UITextField alloc]initWithFrame:CGRectMake(frm.size.width/6, frm.size.height/1.85, ((self.view.frame.size.width)/1.5), 30)];
+    self.urlTextField.borderStyle = UITextBorderStyleNone;
     self.urlTextField.returnKeyType = UIReturnKeyDone;
     self.urlTextField.delegate = self;
+    self.urlTextField.textAlignment = NSTextAlignmentCenter;
+    [self SetTextFieldBorder:self.urlTextField];
 
+    
     [self.view addSubview: self.nameTextField];
     [self.view addSubview: self.imageTextField];
     [self.view addSubview: self.urlTextField];
     
     if (self.isEditMode == YES)
     {
-        self.title = @"Edit a Company";
+        self.title = @"Edit a Product";
         self.nameTextField.text = self.productToEdit.name;
         self.imageTextField.text = self.productToEdit.image;
         self.urlTextField.text = self.productToEdit.url;
@@ -79,6 +100,11 @@
                                              selector:@selector(dismissKeyboard)
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                          action:@selector(dismissKeyboard)];
+    
+    [self.view addGestureRecognizer:tap];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -97,17 +123,29 @@
 
 - (void)didPressButton
 {
-    Product *newProduct = [[Product alloc]initWithName:self.nameTextField.text andImage:self.imageTextField.text andURL:self.urlTextField.text];
+    
     
     if (self.isEditMode == YES)
     {
-        NSUInteger productIndex = [self.currentCompany.products indexOfObject:self.productToEdit];
-        [self.currentCompany.products replaceObjectAtIndex:productIndex withObject:newProduct];
+     
+        NSString *originalProdName = self.productToEdit.name;
+        self.productToEdit.name = self.nameTextField.text;
+        self.productToEdit.image = self.imageTextField.text;
+        self.productToEdit.url = self.urlTextField.text;
+        
+        [self.sharedManager editManagedProduct:self.productToEdit inCompany:self.currentCompany withOriginalName:originalProdName];
+        
         [[self navigationController] popViewControllerAnimated:YES];
         self.isEditMode = NO;
-
+        
     } else {
+        
+        Product *newProduct = [[Product alloc]initWithName:self.nameTextField.text andImage:self.imageTextField.text andURL:self.urlTextField.text];
+        
         [self.currentCompany.products addObject:newProduct];
+        
+        [self.sharedManager createManagedProduct:newProduct inCompany:self.currentCompany];
+        
         [[self navigationController] popViewControllerAnimated:YES];
     }
 }
@@ -125,12 +163,15 @@
 
 -(void)keyboardWillShow {
     // Animate the current view out of the way
-    [UIView animateWithDuration:0.3f animations:^ {
-        self.nameTextField.frame = CGRectMake(75, 55, 170, 30);
-        self.imageTextField.frame = CGRectMake(75, 90, 170, 30);
-        self.urlTextField.frame = CGRectMake(75, 125, 170, 30);
+    
+        CGRect frm = self.view.frame;
+
+        [UIView animateWithDuration:0.3f animations:^ {
+            self.nameTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/11, frm.size.width, 30);
+            self.imageTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/6,  frm.size.width, 30);
+            self.urlTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/4.1,  frm.size.width, 30);
+        }];
         
-    }];
 }
 
 -(void)dismissKeyboard
@@ -138,9 +179,9 @@
     CGRect frm = self.view.frame;
     
     [UIView animateWithDuration:0.3f animations:^ {
-        self.nameTextField.frame = CGRectMake(frm.size.width/4, frm.size.height/3, self.view.frame.size.width/2, 30);
-        self.imageTextField.frame = CGRectMake(frm.size.width/4, frm.size.height/2.3, self.view.frame.size.width/2, 30);
-        self.urlTextField.frame = CGRectMake(frm.size.width/4, frm.size.height/1.85, self.view.frame.size.width/2, 30);
+        self.nameTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/3, self.view.frame.size.width, 30);
+        self.imageTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/2.3, self.view.frame.size.width, 30);
+        self.urlTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/1.85, self.view.frame.size.width, 30);
     }];
     
     [self.view endEditing:YES];

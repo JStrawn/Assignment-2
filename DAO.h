@@ -14,13 +14,10 @@
 #import "ManagedCompany+CoreDataProperties.h"
 #import "ManagedProduct+CoreDataProperties.h"
 #import "Company.h"
+#import "Product.h"
 
 
 @interface DAO : NSObject
-{
-    NSManagedObjectContext *context;
-    NSManagedObjectModel *model;
-}
 
 @property (nonatomic, retain) NSMutableArray *companyList;
 @property (strong) NSManagedObjectContext *managedObjectContext;
@@ -33,5 +30,15 @@
 - (void)loadStockPrices;
 -(void)editManagedCompany:(Company*)comp;
 -(void)createManagedCompany:(Company*)comp;
+-(void)deleteManagedCompany:(NSUInteger)index;
+-(void)editManagedProduct:(Product*)product inCompany:(Company*)currentCompany withOriginalName:(NSString*)original;
+-(void)createManagedProduct:(Product*)product inCompany:(Company*)currentCompany;
+-(void)deleteManagedProduct:(NSUInteger)index inCompany:(Company*)currentCompany;
+-(void)saveChanges;
+
+- (void)undoLastAction:(id)sender;
+- (void)redoLastUndo:(id)sender;
+
+
 
 @end

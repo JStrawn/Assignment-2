@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "Company.h"
-#import "CompanyViewController.h"
+//#import "CompanyViewController.h"
 #import "DAO.h"
 
 @class Company;
@@ -33,5 +33,6 @@
 
 @property BOOL isEditMode;
 @property BOOL keyboardIsUp;
+-(void)SetTextFieldBorder :(UITextField *)textField;
 
 @end

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "CoreDataHelper.h"
 #import "CompanyViewController.h"
+#import "DAO.h"
 
 
 @interface NavControllerAppDelegate : UIResponder <UIApplicationDelegate>
@@ -16,6 +17,9 @@
 //@property (nonatomic, strong, readonly) CoreDataHelper *coreDataHelper;
 @property (readonly, strong) NSPersistentContainer *persistentContainer;
 @property (strong, nonatomic) CompanyViewController *viewController;
+
+@property (nonatomic, retain) DAO *sharedManager;
+
 
 
 - (void)saveContext;

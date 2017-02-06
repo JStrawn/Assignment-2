@@ -2,8 +2,8 @@
 //  ProductViewController.m
 //  NavCtrl
 //
-//  Created by Aditya Narayan on 10/22/13.
-//  Copyright (c) 2013 Aditya Narayan. All rights reserved.
+//  Created by Juliana Strawn on 1/29/17.
+//  Copyright © 2017 Aditya Narayan. All rights reserved.
 //
 
 #import "ProductViewController.h"
@@ -12,6 +12,7 @@
 #import "Company.h"
 #import "ProductInputViewController.h"
 #import "DAO.h"
+#import "CustomCellProduct.h"
 
 @interface ProductViewController ()
 
@@ -21,7 +22,7 @@
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
-    self = [super initWithStyle:style];
+    self = [super init];
     if (self)
     {
         // Custom initialization
@@ -32,9 +33,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     // Preserve selection between presentations.
-    self.clearsSelectionOnViewWillAppear = NO;
+    [self.tableView deselectRowAtIndexPath:[self.tableView indexPathForSelectedRow] animated:YES];
     
     // Edit Button
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addProduct:)];
@@ -45,6 +46,29 @@
     self.sharedManager = [DAO sharedManager];
     
     self.tableView.allowsSelectionDuringEditing = YES;
+    
+    //company image
+    NSURL * imageURL = [NSURL URLWithString:self.currentCompany.imageURL];
+    NSData * imageData = [NSData dataWithContentsOfURL:imageURL];
+    UIImage * image = [UIImage imageWithData:imageData];
+    self.companyImage.image = image;
+    
+    self.companyImage.backgroundColor = [UIColor whiteColor];
+    self.companyImagePaddingView.layer.cornerRadius = 15;
+    
+    self.companyImage.bounds = CGRectInset(self.companyImage.frame, 30.0, 30.0);
+
+    
+    //label text
+    self.companyLabel.text = self.currentCompany.name;
+    
+    //hide tableview is there are no products
+    if (self.currentCompany.products.count == 0) {
+        [self.tableView setHidden:YES];
+    } else {
+        [self.tableView setHidden:NO];
+    }
+
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -53,6 +77,7 @@
     [self.tableView reloadData];
     [super viewWillAppear:animated];
     self.title = self.currentCompany.name;
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -69,6 +94,11 @@
     return 1;
 }
 
+//changing a cell's height
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 80;
+}
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
@@ -79,16 +109,32 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    CustomCellProduct *cell = (CustomCellProduct*)[self.tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"CustomCellProduct" owner:self options:nil];
+        cell = [nib objectAtIndex:0];
+
     }
     // Configure the cells
-    Product *currentProduct = [[Product alloc]init];
-    currentProduct = [self.currentCompany.products objectAtIndex:[indexPath row]];
+    self.currentProduct = [self.currentCompany.products objectAtIndex:[indexPath row]];
     
-    cell.textLabel.text = currentProduct.name;
-    [[cell imageView] setImage: [UIImage imageNamed:currentProduct.image]];
+    cell.productName.text = self.currentProduct.name;
+
+    if (self.currentProduct.image == nil) {
+        UIImage *defaultIcon = [self getImageFromURL:self.currentCompany.imageURL];
+        cell.productImage.image = defaultIcon;
+    } else if ([self.currentProduct.image isEqualToString: @""]) {
+        UIImage *defaultIcon = [self getImageFromURL:self.currentCompany.imageURL];
+        cell.productImage.image = defaultIcon;
+    } else {
+    UIImage *productIcon = [self getImageFromURL:self.currentProduct.image];
+    cell.productImage.image = productIcon;
+    }
+    
+    cell.imageView.layer.borderColor = [[UIColor colorWithRed:0.89 green:0.89 blue:0.89 alpha:1.0]CGColor];
+    cell.imageView.layer.borderWidth = 1.0f;
+
     
     return cell;
 }
@@ -161,6 +207,16 @@
         
         self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:nil];
         
+        //        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:nil];
+        //
+        //        UIImage *undo = [UIImage imageNamed:@"undo2.png"];
+        //
+        //        UIBarButtonItem *undoButton = [[UIBarButtonItem alloc]initWithImage:undo style:UIBarButtonItemStylePlain target:self action:nil];
+        
+        
+        
+        //            self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:backButton, undoButton, nil];
+        
         //this sets the product property in WebviewController
         webViewController.currentProduct = product;
         [self.navigationController
@@ -174,7 +230,7 @@
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
         // Delete the row from the data source
-        [self.currentCompany.products removeObjectAtIndex:indexPath.row];
+        [self.sharedManager deleteManagedProduct:indexPath.row inCompany:self.currentCompany];
         [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
     } else if (editingStyle == UITableViewCellEditingStyleInsert)
     {
@@ -192,11 +248,27 @@
     
     self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:nil];
     
+    
+    
+    
     [self.navigationController
      pushViewController:productInputViewController
      animated:YES];
 }
 
+-(UIImage *) getImageFromURL:(NSString *)fileURL {
+    UIImage * result;
+    
+    NSData * data = [NSData dataWithContentsOfURL:[NSURL URLWithString:fileURL]];
+    result = [UIImage imageWithData:data];
+    
+    return result;
+}
 
-
+- (void)dealloc {
+    [_tableView release];
+    [_companyLabel release];
+    [_companyImagePaddingView release];
+    [super dealloc];
+}
 @end

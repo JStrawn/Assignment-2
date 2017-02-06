@@ -9,6 +9,7 @@
 #import "ItemInputViewController.h"
 #import "Company.h"
 #import "DAO.h"
+#import <QuartzCore/Quartzcore.h>
 
 @interface ItemInputViewController () <UITextFieldDelegate>
 
@@ -28,29 +29,50 @@
     
 }
 
+-(void)SetTextFieldBorder :(UITextField *)textField{
+    
+    CALayer *border = [CALayer layer];
+    CGFloat borderWidth = 2;
+    border.borderColor = [UIColor grayColor].CGColor;
+    border.frame = CGRectMake(0, textField.frame.size.height - borderWidth, textField.frame.size.width, textField.frame.size.height);
+    border.borderWidth = borderWidth;
+    [textField.layer addSublayer:border];
+    textField.layer.masksToBounds = YES;
+    
+}
+
 -(void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     
     CGRect frm = self.view.frame;
     
-    self.nameTextField = [[UITextField alloc]initWithFrame:CGRectMake(frm.size.width/4, frm.size.height/3, ((self.view.frame.size.width)/2), 30)];
-    self.nameTextField.borderStyle = UITextBorderStyleRoundedRect;
+    self.nameTextField = [[UITextField alloc]initWithFrame:CGRectMake(frm.size.width/6, frm.size.height/3, ((self.view.frame.size.width)/1.5), 30)];
+    self.nameTextField.borderStyle = UITextBorderStyleNone;
     self.nameTextField.returnKeyType = UIReturnKeyDone;
     self.nameTextField.delegate = self;
+    self.nameTextField.textAlignment = NSTextAlignmentCenter;
+    [self SetTextFieldBorder:self.nameTextField];
 
 
     
-    self.tickerTextField = [[UITextField alloc]initWithFrame:CGRectMake(frm.size.width/4, frm.size.height/2.3, ((self.view.frame.size.width)/2), 30)];
-    self.tickerTextField.borderStyle = UITextBorderStyleRoundedRect;
+    self.tickerTextField = [[UITextField alloc]initWithFrame:CGRectMake(frm.size.width/6, frm.size.height/2.3, ((self.view.frame.size.width)/1.5), 30)];
+    self.tickerTextField.borderStyle = UITextBorderStyleNone;
     self.tickerTextField.returnKeyType = UIReturnKeyDone;
     self.tickerTextField.delegate = self;
+    self.tickerTextField.textAlignment = NSTextAlignmentCenter;
+    [self SetTextFieldBorder:self.tickerTextField];
 
 
     
-    self.imageTextField = [[UITextField alloc]initWithFrame:CGRectMake(frm.size.width/4, frm.size.height/1.85, ((self.view.frame.size.width)/2), 30)];
-    self.imageTextField.borderStyle = UITextBorderStyleRoundedRect;
+    self.imageTextField = [[UITextField alloc]initWithFrame:CGRectMake(frm.size.width/6, frm.size.height/1.85, ((self.view.frame.size.width)/1.5), 30)];
+    self.imageTextField.borderStyle = UITextBorderStyleNone;
     self.imageTextField.returnKeyType = UIReturnKeyDone;
     self.imageTextField.delegate = self;
+    self.imageTextField.textAlignment = NSTextAlignmentCenter;
+    self.imageTextField.adjustsFontSizeToFitWidth = YES;
+    self.imageTextField.minimumFontSize = 2.0;
+
+    [self SetTextFieldBorder:self.imageTextField];
 
     
     [self.view addSubview: self.nameTextField];
@@ -118,8 +140,7 @@
         self.companyToEdit.ticker = self.tickerTextField.text;
         self.companyToEdit.imageURL = self.imageTextField.text;
             
-            //DAO Method thatedits the corresponding company in managedcompany array
-            //ex. [DAO editCompany:self.companyToEdit];
+            //DAO Method that edits the corresponding company in managedcompany array
         
             [self.sharedManager editManagedCompany:self.companyToEdit];
             
@@ -130,8 +151,7 @@
         
         [self.sharedManager.companyList addObject:newCompany];
         
-        //make a DAO method you call here to create and add the same managed company
-        //ex. [DAO addCompany:newCompany]; creates managed company based on basic company
+        //the method in DAO creates managed company based on basic company
         
         [self.sharedManager createManagedCompany:newCompany];
         
@@ -141,36 +161,7 @@
     }
 }
 
-//-(void)createCompany:(NSString*)name andTicker:(NSString*)ticker andProducts:(NSMutableArray*)products andImage:(NSString*)image;
-//{
-//    ManagedCompany *c = [NSEntityDescription insertNewObjectForEntityForName:@"Company" inManagedObjectContext:self.sharedObjectContext.managedObjectContext];
-//    
-//    [c initWithName:name andTicker:ticker andProducts:products andImage:image];
-//    c.name =
-//
-//    [self saveChanges];
-//    [self.sharedManager.companyList addObject:c];
-//    [self.companyViewController.tableView reloadData];
-//}
 
--(void)deleteCompany:(int)index
-{
-    ManagedCompany *c = [self.sharedManager.companyList objectAtIndex:index];
-    [self.sharedObjectContext.managedObjectContext deleteObject:c];
-    [self saveChanges];
-    [self.sharedManager.companyList removeObjectAtIndex:index];
-    [self.companyViewController.tableView reloadData];
-}
-
--(void) saveChanges
-{
-    NSError *err = nil;
-    BOOL successful = [context save:&err];
-    if(!successful){
-        NSLog(@"Error saving: %@", [err localizedDescription]);
-    }
-    NSLog(@"Data Saved");
-}
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
@@ -184,14 +175,20 @@
 }
 
 -(void)keyboardWillShow {
-    NSLog(@"keyboardWillShow");
-    //self.view.translatesAutoresizingMaskIntoConstraints = NO;
     
     // Animate the current view out of the way
+    
+    CGRect frm = self.view.frame;
+
     [UIView animateWithDuration:0.3f animations:^ {
-        self.nameTextField.frame = CGRectMake(75, 55, 170, 30);
-        self.tickerTextField.frame = CGRectMake(75, 90, 170, 30);
-        self.imageTextField.frame = CGRectMake(75, 125, 170, 30);
+        self.nameTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/11, frm.size.width, 30);
+        self.tickerTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/6,  frm.size.width, 30);
+        self.imageTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/4.1,  frm.size.width, 30);
+        
+        self.nameTextField.textAlignment = NSTextAlignmentLeft;
+        self.tickerTextField.textAlignment = NSTextAlignmentLeft;
+        self.imageTextField.textAlignment = NSTextAlignmentLeft;
+
     }];
 }
 
@@ -200,12 +197,29 @@
     CGRect frm = self.view.frame;
 
     [UIView animateWithDuration:0.3f animations:^ {
-        self.nameTextField.frame = CGRectMake(frm.size.width/4, frm.size.height/3, self.view.frame.size.width/2, 30);
-        self.tickerTextField.frame = CGRectMake(frm.size.width/4, frm.size.height/2.3, self.view.frame.size.width/2, 30);
-        self.imageTextField.frame = CGRectMake(frm.size.width/4, frm.size.height/1.85, self.view.frame.size.width/2, 30);
+        self.nameTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/3, self.view.frame.size.width, 30);
+        self.tickerTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/2.3, self.view.frame.size.width, 30);
+        self.imageTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/1.85, self.view.frame.size.width, 30);
+        
+        
+        self.nameTextField.adjustsFontSizeToFitWidth = NO;
+        self.tickerTextField.adjustsFontSizeToFitWidth = NO;
+        self.imageTextField.adjustsFontSizeToFitWidth = YES;
+
+        self.nameTextField.textAlignment = NSTextAlignmentCenter;
+        self.tickerTextField.textAlignment = NSTextAlignmentCenter;
+        self.imageTextField.textAlignment = NSTextAlignmentCenter;
+        
+        self.nameTextField.center = self.view.center;
+        self.tickerTextField.center = self.view.center;
+        self.imageTextField.center = self.view.center;
+    
     }];
+
     
     [self.view endEditing:YES];
+    
+
 
 }
 
