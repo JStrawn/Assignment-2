@@ -10,7 +10,6 @@
 
 @interface Company : NSObject
 @property (strong, nonatomic) NSString* name;
-@property (strong, nonatomic) NSString* title;
 @property (strong, nonatomic) NSString* ticker;
 @property (strong, nonatomic) NSMutableArray *products;
 @property (strong, nonatomic) NSString* imageURL;

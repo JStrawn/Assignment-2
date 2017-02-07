@@ -269,6 +269,14 @@
     [_tableView release];
     [_companyLabel release];
     [_companyImagePaddingView release];
+    [_productToEdit release];
+    [_currentProduct release];
+    [_productInputViewController release];
+    [_sharedManager release];
+    [_currentCompany release];
+    [_products release];
+    [_webViewController release];
+    [_companyImage release];
     [super dealloc];
 }
 @end

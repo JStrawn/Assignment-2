@@ -17,4 +17,11 @@
     self.url = url;
     return self;
 }
+
+-(void)dealloc {
+    [_name release];
+    [_image release];
+    [_url release];
+    [super dealloc];
+}
 @end

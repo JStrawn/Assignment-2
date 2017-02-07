@@ -123,6 +123,7 @@
     self.undoBtn.hidden = YES;
     self.redoBtn.hidden = YES;
 
+    [super viewWillAppear:YES];
 }
 
 - (void)didReceiveMemoryWarning
@@ -334,6 +335,10 @@
     [_redoBtn release];
     [_undoBtn release];
     [_undoRedoView release];
+    [_sharedManager release];
+    [_itemInputViewController release];
+    [_currentCompany release];
+    [_productViewController release];
     [super dealloc];
 }
 @end

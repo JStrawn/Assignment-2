@@ -108,6 +108,8 @@
                                                                           action:@selector(dismissKeyboard)];
     
     [self.view addGestureRecognizer:tap];
+    
+    [super viewWillAppear:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -242,5 +244,17 @@
  // Pass the selected object to the new view controller.
  }
  */
+
+-(void)dealloc {
+    [_sharedObjectContext release];
+    [_nameTextField release];
+    [_imageTextField release];
+    [_sharedManager release];
+    [_companyViewController release];
+    [_newCompany release];
+    [_tickerTextField release];
+    [_companyToEdit release];
+    [super dealloc];
+}
 
 @end

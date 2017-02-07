@@ -20,4 +20,13 @@
     self.imageURL = imageURL;
     return self;
 }
+
+-(void)dealloc {
+    [_name release];
+    [_ticker release];
+    [_products release];
+    [_imageURL release];
+    [_stockPrice release];
+    [super dealloc];
+}
 @end

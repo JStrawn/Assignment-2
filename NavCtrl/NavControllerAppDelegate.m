@@ -89,6 +89,14 @@
     }
 }
 
+-(void)dealloc {
+    [_viewController release];
+    [_window release];
+    [_persistentContainer release];
+    [_sharedManager release];
+    [super dealloc];
+}
+
 
 
 @end

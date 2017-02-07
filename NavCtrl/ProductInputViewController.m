@@ -206,4 +206,15 @@
  }
  */
 
+-(void)dealloc {
+    [_nameTextField release];
+    [_imageTextField release];
+    [_urlTextField release];
+    [_sharedManager release];
+    [_productToEdit release];
+    [_currentCompany release];
+    [_companyViewController release];
+    [super dealloc];
+}
+
 @end
