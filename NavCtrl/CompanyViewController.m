@@ -93,7 +93,7 @@
 
 - (void)addItem:sender
 {
-    self.itemInputViewController = [[ItemInputViewController alloc]init];
+    self.itemInputViewController = [[[ItemInputViewController alloc]init]autorelease];
     self.itemInputViewController.isEditMode = NO;
     [self.navigationController
      pushViewController:self.itemInputViewController
@@ -264,7 +264,7 @@
     
     if (tableView.editing == YES) {
         
-        self.itemInputViewController = [[ItemInputViewController alloc]init];
+        self.itemInputViewController = [[[ItemInputViewController alloc]init]autorelease];
         self.itemInputViewController.isEditMode = YES;
         self.itemInputViewController.companyToEdit = company;
         
@@ -276,11 +276,11 @@
         
         // Change the index path row in the array so the path to "products" is also rearranged
         
-        self.productViewController = [[ProductViewController alloc]init];
+        self.productViewController = [[[ProductViewController alloc]init]autorelease];
         self.itemInputViewController.isEditMode = NO;
         self.productViewController.currentCompany = company;
         
-        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:nil];
+        self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:nil]autorelease];
         
         //        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:nil];
         //
@@ -310,7 +310,7 @@
 }
 
 - (IBAction)addCompanyButton:(id)sender {
-    self.itemInputViewController = [[ItemInputViewController alloc]init];
+    self.itemInputViewController = [[[ItemInputViewController alloc]init]autorelease];
     self.itemInputViewController.isEditMode = NO;
     [self.navigationController
      pushViewController:self.itemInputViewController

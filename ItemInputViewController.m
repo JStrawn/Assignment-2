@@ -46,7 +46,7 @@
     
     CGRect frm = self.view.frame;
     
-    self.nameTextField = [[UITextField alloc]initWithFrame:CGRectMake(frm.size.width/6, frm.size.height/3, ((self.view.frame.size.width)/1.5), 30)];
+    self.nameTextField = [[[UITextField alloc]initWithFrame:CGRectMake(frm.size.width/6, frm.size.height/3, ((self.view.frame.size.width)/1.5), 30)]autorelease];
     self.nameTextField.borderStyle = UITextBorderStyleNone;
     self.nameTextField.returnKeyType = UIReturnKeyDone;
     self.nameTextField.delegate = self;
@@ -55,7 +55,7 @@
 
 
     
-    self.tickerTextField = [[UITextField alloc]initWithFrame:CGRectMake(frm.size.width/6, frm.size.height/2.3, ((self.view.frame.size.width)/1.5), 30)];
+    self.tickerTextField = [[[UITextField alloc]initWithFrame:CGRectMake(frm.size.width/6, frm.size.height/2.3, ((self.view.frame.size.width)/1.5), 30)]autorelease];
     self.tickerTextField.borderStyle = UITextBorderStyleNone;
     self.tickerTextField.returnKeyType = UIReturnKeyDone;
     self.tickerTextField.delegate = self;
@@ -64,7 +64,7 @@
 
 
     
-    self.imageTextField = [[UITextField alloc]initWithFrame:CGRectMake(frm.size.width/6, frm.size.height/1.85, ((self.view.frame.size.width)/1.5), 30)];
+    self.imageTextField = [[[UITextField alloc]initWithFrame:CGRectMake(frm.size.width/6, frm.size.height/1.85, ((self.view.frame.size.width)/1.5), 30)]autorelease];
     self.imageTextField.borderStyle = UITextBorderStyleNone;
     self.imageTextField.returnKeyType = UIReturnKeyDone;
     self.imageTextField.delegate = self;
@@ -149,7 +149,7 @@
             [self.navigationController popViewControllerAnimated:YES];
         
     } else {
-        Company *newCompany = [[Company alloc]initWithName:self.nameTextField.text andTicker:self.tickerTextField.text andProducts:[[NSMutableArray alloc]init] andImage:self.imageTextField.text];
+        Company *newCompany = [[[Company alloc]initWithName:self.nameTextField.text andTicker:self.tickerTextField.text andProducts:[[[NSMutableArray alloc]init]autorelease] andImage:self.imageTextField.text]autorelease];
         
         [self.sharedManager.companyList addObject:newCompany];
         

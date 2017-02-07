@@ -49,14 +49,14 @@
     
     CGRect frm = self.view.frame;
     
-    self.nameTextField = [[UITextField alloc]initWithFrame:CGRectMake(frm.size.width/6, frm.size.height/3, ((self.view.frame.size.width)/1.5), 30)];
+    self.nameTextField = [[[UITextField alloc]initWithFrame:CGRectMake(frm.size.width/6, frm.size.height/3, ((self.view.frame.size.width)/1.5), 30)]autorelease];
     self.nameTextField.borderStyle = UITextBorderStyleNone;
     self.nameTextField.returnKeyType = UIReturnKeyDone;
     self.nameTextField.delegate = self;
     self.nameTextField.textAlignment = NSTextAlignmentCenter;
     [self SetTextFieldBorder:self.nameTextField];
     
-    self.imageTextField = [[UITextField alloc]initWithFrame:CGRectMake(frm.size.width/6, frm.size.height/2.3, ((self.view.frame.size.width)/1.5), 30)];
+    self.imageTextField = [[[UITextField alloc]initWithFrame:CGRectMake(frm.size.width/6, frm.size.height/2.3, ((self.view.frame.size.width)/1.5), 30)]autorelease];
     self.imageTextField.borderStyle = UITextBorderStyleNone;
     self.imageTextField.returnKeyType = UIReturnKeyDone;
     self.imageTextField.delegate = self;
@@ -64,7 +64,7 @@
     [self SetTextFieldBorder:self.imageTextField];
 
     
-    self.urlTextField = [[UITextField alloc]initWithFrame:CGRectMake(frm.size.width/6, frm.size.height/1.85, ((self.view.frame.size.width)/1.5), 30)];
+    self.urlTextField = [[[UITextField alloc]initWithFrame:CGRectMake(frm.size.width/6, frm.size.height/1.85, ((self.view.frame.size.width)/1.5), 30)]autorelease];
     self.urlTextField.borderStyle = UITextBorderStyleNone;
     self.urlTextField.returnKeyType = UIReturnKeyDone;
     self.urlTextField.delegate = self;
@@ -105,6 +105,8 @@
                                                                           action:@selector(dismissKeyboard)];
     
     [self.view addGestureRecognizer:tap];
+    
+    [super viewWillAppear:YES];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -140,7 +142,7 @@
         
     } else {
         
-        Product *newProduct = [[Product alloc]initWithName:self.nameTextField.text andImage:self.imageTextField.text andURL:self.urlTextField.text];
+        Product *newProduct = [[[Product alloc]initWithName:self.nameTextField.text andImage:self.imageTextField.text andURL:self.urlTextField.text]autorelease];
         
         [self.currentCompany.products addObject:newProduct];
         

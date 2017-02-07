@@ -67,8 +67,8 @@
     //when you add a company, append its ticker to the url
     
     
-    NSMutableString *companyTickerList = [[NSMutableString alloc]init];
-    NSMutableString *url = [[NSMutableString alloc]init];
+    NSMutableString *companyTickerList = [[[NSMutableString alloc]init]autorelease];
+    NSMutableString *url = [[[NSMutableString alloc]init]autorelease];
 
     //use fast enum, it's preferred over a i=0; i++ type of loop because it knows where to end
     for (Company *currentCompany in self.companyList) {
@@ -338,7 +338,7 @@
     Company *amazon = [[Company alloc]initWithName:@"Amazon" andTicker:@"AMZN" andProducts:[[NSMutableArray alloc]initWithObjects:amazonFire, kindleFire, kindlePaperWhite, nil] andImage:@"http://www.iconarchive.com/download/i80413/uiconstock/socialmedia/Amazon.ico"];
     
     
-    self.companyList = [[NSMutableArray alloc]initWithObjects:apple, samsung, google, amazon, nil];
+    self.companyList = [[[NSMutableArray alloc]initWithObjects:apple, samsung, google, amazon, nil]autorelease];
     
     for (Company *currentCompany in self.companyList) {
         //make managed companies for every company

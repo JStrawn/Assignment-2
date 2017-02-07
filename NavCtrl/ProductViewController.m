@@ -183,7 +183,7 @@
 {
     
     if (tableView.editing == YES) {
-        self.productInputViewController = [[ProductInputViewController alloc]init];
+        self.productInputViewController = [[[ProductInputViewController alloc]init]autorelease];
         //initialize current company again so it carries over
         self.productInputViewController.currentCompany = self.currentCompany;
         
@@ -194,10 +194,10 @@
          pushViewController:self.productInputViewController
          animated:YES];
     } else {
-        self.productInputViewController = [[ProductInputViewController alloc]init];
+        self.productInputViewController = [[[ProductInputViewController alloc]init]autorelease];
         self.productInputViewController.isEditMode = NO;
         
-        WebViewController *webViewController = [[WebViewController alloc]init];
+        WebViewController *webViewController = [[[WebViewController alloc]init]autorelease];
         //initialize current company again so it carries over
         self.productInputViewController.currentCompany = self.currentCompany;
         
@@ -205,17 +205,8 @@
         
         webViewController.title = product.name;
         
-        self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:nil];
+        self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:nil]autorelease];
         
-        //        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:nil];
-        //
-        //        UIImage *undo = [UIImage imageNamed:@"undo2.png"];
-        //
-        //        UIBarButtonItem *undoButton = [[UIBarButtonItem alloc]initWithImage:undo style:UIBarButtonItemStylePlain target:self action:nil];
-        
-        
-        
-        //            self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:backButton, undoButton, nil];
         
         //this sets the product property in WebviewController
         webViewController.currentProduct = product;
@@ -240,13 +231,13 @@
 
 - (void)addProduct:sender
 {
-    ProductInputViewController *productInputViewController = [[ProductInputViewController alloc]init];
+    ProductInputViewController *productInputViewController = [[[ProductInputViewController alloc]init]autorelease];
     
     Company *company = self.currentCompany;
     
     productInputViewController.currentCompany = company;
     
-    self.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:nil];
+    self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:nil]autorelease];
     
     
     
