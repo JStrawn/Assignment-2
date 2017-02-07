@@ -44,8 +44,5 @@
 
 -(void)addItem:sender;
 
-- (void)undoLastAction:(id)sender;
-
-
 @end
 
