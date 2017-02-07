@@ -21,7 +21,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Initialize the webview
-    _webView = [[WKWebView alloc] initWithFrame:self.view.frame];
+    _webView = [[[WKWebView alloc] initWithFrame:self.view.frame]autorelease];
     _webView.frame = CGRectMake(self.view.frame.origin.x,self.view.frame.origin.y, self.view.frame.size.width, self.view.frame.size.height);
     NSString *currentURL = self.currentProduct.url;
     NSURL *url = [NSURL URLWithString:currentURL];

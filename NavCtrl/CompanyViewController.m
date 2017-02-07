@@ -51,7 +51,7 @@
     self.navigationItem.leftBarButtonItem = self.editButtonItem;
     
     //Add Button
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addItem:)];
+    UIBarButtonItem *addButton = [[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(addItem:)]autorelease];
     self.navigationItem.rightBarButtonItem = addButton;
     
     //Title and Color
@@ -68,26 +68,6 @@
     self.sharedManager = [DAO sharedManager];
     self.sharedManager.reloadDelegate = self;
     
-    
-    //    //undo and redo buttons
-    //    UIButton *undoButton = [[UIButton alloc]init];
-    //    undoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    //    [undoButton addTarget:self
-    //                   action:@selector(undoButtonPressed)
-    //         forControlEvents:UIControlEventTouchUpInside];
-    //    [undoButton setTitle:@"Undo" forState:UIControlStateNormal];
-    //    undoButton.frame = CGRectMake(self.view.center.x, self.view.center.y, 160.0, 40.0);
-    //
-    //    [self.view addSubview:undoButton];
-    //    [self.view bringSubviewToFront:undoButton];
-    
-    //    UIButton *redoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    //    [redoButton addTarget:self
-    //                   action:@selector(redoButtonPressed)
-    //         forControlEvents:UIControlEventTouchUpInside];
-    //    [redoButton setTitle:@"Redo" forState:UIControlStateNormal];
-    //    redoButton.frame = CGRectMake(80.0, 210.0, 160.0, 40.0);
-    //    [self.view addSubview:redoButton];
 }
 
 
@@ -102,7 +82,7 @@
 
 
 - (void)viewWillAppear:(BOOL)animated {
-    [self.tableView reloadData];
+    //[self.tableView reloadData];
     self.itemInputViewController.isEditMode = NO;
     [self reloadStockData];
     
@@ -282,13 +262,6 @@
         
         self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:nil]autorelease];
         
-        //        UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:nil];
-        //
-        //        UIImage *undo = [UIImage imageNamed:@"undo2.png"];
-        //
-        //        UIBarButtonItem *undoButton = [[UIBarButtonItem alloc]initWithImage:undo style:UIBarButtonItemStylePlain target:self action:nil];
-        //
-        //        self.navigationItem.leftBarButtonItems = [NSArray arrayWithObjects:backButton, undoButton, nil];
         
         [self.navigationController
          pushViewController:self.productViewController

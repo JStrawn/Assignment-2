@@ -21,7 +21,7 @@
     static DAO *sharedMyManager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
-        sharedMyManager = [[self alloc] init];
+        sharedMyManager = [[[self alloc] init]autorelease];
     });
     return sharedMyManager;
 }
@@ -29,6 +29,7 @@
 
 -(id)init
 {
+    self = [super init];
     [self initializeCoreData];
 
     static NSString* const hasRunAppOnceKey = @"hasRunAppOnceKey";
@@ -50,7 +51,7 @@
     
     [self loadStockPrices];
     
-    self.managedObjectContext.undoManager = [[NSUndoManager alloc] init];
+    self.managedObjectContext.undoManager = [[[NSUndoManager alloc] init]autorelease];
     
 
     return self;
@@ -82,7 +83,7 @@
     [url appendString:@"+&f=a"];
     
     //if your app is going to get any info from the internet, you HAVE to change the plist file to configure App Transport Security Sessions
-    NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
+    NSMutableURLRequest *request = [[[NSMutableURLRequest alloc] init]autorelease];
     [request setHTTPMethod:@"GET"];
     [request setURL:[NSURL URLWithString:url]];
     
@@ -97,7 +98,7 @@
                                         //separate by new line, and get those numbers assigned to each company.stockPrice
                                         
                                         NSLog(@"%@", data);
-                                        NSString *dataString = [[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding];
+                                        NSString *dataString = [[[NSString alloc]initWithData:data encoding:NSUTF8StringEncoding]autorelease];
                                         NSLog(@"%@", dataString);
                                         
                                         NSString *dataStringTrimmed = [dataString stringByTrimmingCharactersInSet:[NSCharacterSet newlineCharacterSet]];
@@ -121,11 +122,11 @@
 - (void)initializeCoreData
 {
     NSURL *modelURL = [[NSBundle mainBundle] URLForResource:@"DataModel" withExtension:@"momd"];
-    NSManagedObjectModel *mom = [[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL];
+    NSManagedObjectModel *mom = [[[NSManagedObjectModel alloc] initWithContentsOfURL:modelURL]autorelease];
     NSAssert(mom != nil, @"Error initializing Managed Object Model");
     
-    NSPersistentStoreCoordinator *psc = [[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mom];
-    NSManagedObjectContext *moc = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+    NSPersistentStoreCoordinator *psc = [[[NSPersistentStoreCoordinator alloc] initWithManagedObjectModel:mom]autorelease];
+    NSManagedObjectContext *moc = [[[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType]autorelease];
     [moc setPersistentStoreCoordinator:psc];
     //set moc as a DAO property
     [self setManagedObjectContext:moc];
@@ -273,26 +274,24 @@
 
 -(void)loadAllCompanies
 {
-    NSFetchRequest *companyRequest = [[NSFetchRequest alloc]initWithEntityName:@"ManagedCompany"];
-//    self.fetchedCompanies = [[NSMutableArray alloc]init];
+    NSFetchRequest *companyRequest = [[[NSFetchRequest alloc]initWithEntityName:@"ManagedCompany"]autorelease];
     self.fetchedCompanies = [NSMutableArray arrayWithArray:[self.managedObjectContext executeFetchRequest:companyRequest error:nil]];
     
     
-    self.companyList = [[NSMutableArray alloc]init];
-    self.managedCompanies = [[NSMutableArray alloc] init];
+    self.companyList = [[[NSMutableArray alloc]init]autorelease];
+    self.managedCompanies = [[[NSMutableArray alloc] init]autorelease];
     
     //now you have to turn fetchedcompanies into regular companies by enumeration and put them in company list property
     
     for (ManagedCompany *currentManagedCompany in self.fetchedCompanies) {
         
-        Company *c = [[Company alloc]initWithName:currentManagedCompany.name andTicker:currentManagedCompany.ticker andProducts:[[NSMutableArray alloc]init] andImage:currentManagedCompany.imageUrl];
+        Company *c = [[[Company alloc]initWithName:currentManagedCompany.name andTicker:currentManagedCompany.ticker andProducts:[[[NSMutableArray alloc]init]autorelease] andImage:currentManagedCompany.imageUrl]autorelease];
         
         
         
         for (ManagedProduct *currentManagedProduct in currentManagedCompany.products) {
             //make managed products and set them to "c"
-            Product *p = [[Product alloc]initWithName:currentManagedProduct.name andImage:currentManagedProduct.image andURL:currentManagedProduct.url];
-            //p.productID = [[[currentManagedProduct objectID] URIRepresentation]absoluteString];
+            Product *p = [[[Product alloc]initWithName:currentManagedProduct.name andImage:currentManagedProduct.image andURL:currentManagedProduct.url]autorelease];
             
             //add products to the companys products array
             [c.products addObject:p];
@@ -312,30 +311,30 @@
 {
     // Initialize Products
     
-    Product *iPad = [[Product alloc]initWithName:@"iPad" andImage:@"https://support.apple.com/content/dam/edam/applecare/images/en_US/ipad/featured-content-ipad-icon_2x.png" andURL:@"http://www.apple.com/ipad/"];
-    Product *iPodTouch = [[Product alloc]initWithName:@"iPod Touch" andImage:@"https://store.storeimages.cdn-apple.com/4974/as-images.apple.com/is/image/AppleInc/aos/published/images/i/po/ipod/touch/ipod-touch-product-blue-2015_GEO_US?wid=300&hei=300&fmt=png-alpha&qlt=95&.v=1482277688667" andURL:@"http://www.apple.com/ipod-touch/"];
-    Product *iPhone = [[Product alloc]initWithName:@"iPhone" andImage:@"https://support.apple.com/content/dam/edam/applecare/images/en_US/iphone/featured-content-iphone-transfer-content-ios10_2x.png" andURL:@"http://www.apple.com/iphone-7/"];
+    Product *iPad = [[[Product alloc]initWithName:@"iPad" andImage:@"https://support.apple.com/content/dam/edam/applecare/images/en_US/ipad/featured-content-ipad-icon_2x.png" andURL:@"http://www.apple.com/ipad/"]autorelease];
+    Product *iPodTouch = [[[Product alloc]initWithName:@"iPod Touch" andImage:@"https://store.storeimages.cdn-apple.com/4974/as-images.apple.com/is/image/AppleInc/aos/published/images/i/po/ipod/touch/ipod-touch-product-blue-2015_GEO_US?wid=300&hei=300&fmt=png-alpha&qlt=95&.v=1482277688667" andURL:@"http://www.apple.com/ipod-touch/"]autorelease];
+    Product *iPhone = [[[Product alloc]initWithName:@"iPhone" andImage:@"https://support.apple.com/content/dam/edam/applecare/images/en_US/iphone/featured-content-iphone-transfer-content-ios10_2x.png" andURL:@"http://www.apple.com/iphone-7/"]autorelease];
     
-    Product *galaxyS4 = [[Product alloc]initWithName:@"Galaxy S4" andImage:@"" andURL:@"http://www.samsung.com/us/mobile/phones/galaxy-s/samsung-galaxy-s4-verizon-white-frost-16gb-sch-i545zwavzw/"];
-    Product *galaxyNote = [[Product alloc]initWithName:@"Galaxy Note" andImage:@"" andURL:@"http://www.samsung.com/us/mobile/phones/galaxy-note/samsung-galaxy-note5-32gb-at-t-black-sapphire-sm-n920azkaatt/"];
-    Product *galaxyTab = [[Product alloc]initWithName:@"Galaxy Tab" andImage:@"" andURL:@"http://www.samsung.com/us/mobile/tablets/galaxy-tab-s2/sm-t713-sm-t713nzkexar/"];
+    Product *galaxyS4 = [[[Product alloc]initWithName:@"Galaxy S4" andImage:@"" andURL:@"http://www.samsung.com/us/mobile/phones/galaxy-s/samsung-galaxy-s4-verizon-white-frost-16gb-sch-i545zwavzw/"]autorelease];
+    Product *galaxyNote = [[[Product alloc]initWithName:@"Galaxy Note" andImage:@"" andURL:@"http://www.samsung.com/us/mobile/phones/galaxy-note/samsung-galaxy-note5-32gb-at-t-black-sapphire-sm-n920azkaatt/"]autorelease];
+    Product *galaxyTab = [[[Product alloc]initWithName:@"Galaxy Tab" andImage:@"" andURL:@"http://www.samsung.com/us/mobile/tablets/galaxy-tab-s2/sm-t713-sm-t713nzkexar/"]autorelease];
     
-    Product *googlePixel = [[Product alloc]initWithName:@"Google Pixel" andImage:@"" andURL:@"https://madeby.google.com/phone/"];
-    Product *nexus6P = [[Product alloc]initWithName:@"Nexus 6P" andImage:@"" andURL:@"https://www.google.com/nexus/6p/"];
-    Product *nexus5X = [[Product alloc]initWithName:@"Nexus 5X" andImage:@"" andURL:@"https://www.google.com/nexus/5x/"];
+    Product *googlePixel = [[[Product alloc]initWithName:@"Google Pixel" andImage:@"" andURL:@"https://madeby.google.com/phone/"]autorelease];
+    Product *nexus6P = [[[Product alloc]initWithName:@"Nexus 6P" andImage:@"" andURL:@"https://www.google.com/nexus/6p/"]autorelease];
+    Product *nexus5X = [[[Product alloc]initWithName:@"Nexus 5X" andImage:@"" andURL:@"https://www.google.com/nexus/5x/"]autorelease];
     
-    Product *amazonFire = [[Product alloc]initWithName:@"Amazon Fire Phone" andImage:@"" andURL:@"https://www.amazon.com/Amazon-Fire-Phone-32GB-Unlocked/dp/B00OC0USA6"];
-    Product *kindleFire = [[Product alloc]initWithName:@"Kindle Fire" andImage:@"" andURL: @"https://www.amazon.com/Amazon-Fire-7-Inch-Tablet-8GB/dp/B00TSUGXKE"];
-    Product *kindlePaperWhite = [[Product alloc]initWithName:@"Kindle PaperWhite" andImage:@"" andURL:  @"https://www.amazon.com/Amazon-Kindle-Paperwhite-6-Inch-4GB-eReader/dp/B00OQVZDJM"];
+    Product *amazonFire = [[[Product alloc]initWithName:@"Amazon Fire Phone" andImage:@"" andURL:@"https://www.amazon.com/Amazon-Fire-Phone-32GB-Unlocked/dp/B00OC0USA6"]autorelease];
+    Product *kindleFire = [[[Product alloc]initWithName:@"Kindle Fire" andImage:@"" andURL: @"https://www.amazon.com/Amazon-Fire-7-Inch-Tablet-8GB/dp/B00TSUGXKE"]autorelease];
+    Product *kindlePaperWhite = [[[Product alloc]initWithName:@"Kindle PaperWhite" andImage:@"" andURL:  @"https://www.amazon.com/Amazon-Kindle-Paperwhite-6-Inch-4GB-eReader/dp/B00OQVZDJM"]autorelease];
     
     // Initialize Companies with Products
-    Company *apple = [[Company alloc]initWithName:@"Apple" andTicker:@"AAPL" andProducts:[[NSMutableArray alloc]initWithObjects:iPad, iPodTouch, iPhone, nil] andImage:@"http://www.iconsdb.com/icons/preview/gray/apple-xxl.png"];
+    Company *apple = [[[Company alloc]initWithName:@"Apple" andTicker:@"AAPL" andProducts:[[[NSMutableArray alloc]initWithObjects:iPad, iPodTouch, iPhone, nil]autorelease] andImage:@"http://www.iconsdb.com/icons/preview/gray/apple-xxl.png"]autorelease];
     
-    Company *samsung = [[Company alloc]initWithName:@"Samsung" andTicker:@"SMSD.L" andProducts:[[NSMutableArray alloc]initWithObjects:galaxyS4, galaxyNote, galaxyTab, nil] andImage:@"http://www.iconsdb.com/icons/preview/navy-blue/samsung-xxl.png"];
+    Company *samsung = [[[Company alloc]initWithName:@"Samsung" andTicker:@"SMSD.L" andProducts:[[[NSMutableArray alloc]initWithObjects:galaxyS4, galaxyNote, galaxyTab, nil]autorelease] andImage:@"http://www.iconsdb.com/icons/preview/navy-blue/samsung-xxl.png"]autorelease];
     
-    Company *google = [[Company alloc]initWithName:@"Google" andTicker:@"GOOG" andProducts:[[NSMutableArray alloc]initWithObjects:googlePixel, nexus6P, nexus5X, nil] andImage:@"https://static1.squarespace.com/static/51fc83aee4b098462d56852b/t/55fb3729e4b04875be34a101/1442527018402/?format=100w"];
+    Company *google = [[[Company alloc]initWithName:@"Google" andTicker:@"GOOG" andProducts:[[[NSMutableArray alloc]initWithObjects:googlePixel, nexus6P, nexus5X, nil]autorelease] andImage:@"https://static1.squarespace.com/static/51fc83aee4b098462d56852b/t/55fb3729e4b04875be34a101/1442527018402/?format=100w"]autorelease];
     
-    Company *amazon = [[Company alloc]initWithName:@"Amazon" andTicker:@"AMZN" andProducts:[[NSMutableArray alloc]initWithObjects:amazonFire, kindleFire, kindlePaperWhite, nil] andImage:@"http://www.iconarchive.com/download/i80413/uiconstock/socialmedia/Amazon.ico"];
+    Company *amazon = [[[Company alloc]initWithName:@"Amazon" andTicker:@"AMZN" andProducts:[[[NSMutableArray alloc]initWithObjects:amazonFire, kindleFire, kindlePaperWhite, nil]autorelease] andImage:@"http://www.iconarchive.com/download/i80413/uiconstock/socialmedia/Amazon.ico"]autorelease];
     
     
     self.companyList = [[[NSMutableArray alloc]initWithObjects:apple, samsung, google, amazon, nil]autorelease];
@@ -365,6 +364,13 @@
 
 }
 
-
+-(void)dealloc {
+    [_companyList release];
+    [_managedCompanies release];
+    [_reloadDelegate release];
+    [_managedObjectContext release];
+    [_fetchedCompanies release];
+    [super dealloc];
+}
 
 @end

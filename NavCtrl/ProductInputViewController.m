@@ -25,7 +25,7 @@
     self.sharedManager = [DAO sharedManager];
     
     self.title = @"Create a New Product";
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(didPressButton)];
+    UIBarButtonItem *rightButton = [[[UIBarButtonItem alloc] initWithTitle:@"Save" style:UIBarButtonItemStylePlain target:self action:@selector(didPressButton)]autorelease];
     self.navigationItem.rightBarButtonItem = rightButton;
     
 }
@@ -101,8 +101,8 @@
                                                  name:UIKeyboardWillHideNotification
                                                object:nil];
     
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self
-                                                                          action:@selector(dismissKeyboard)];
+    UITapGestureRecognizer *tap = [[[UITapGestureRecognizer alloc] initWithTarget:self
+                                                                          action:@selector(dismissKeyboard)]autorelease];
     
     [self.view addGestureRecognizer:tap];
     

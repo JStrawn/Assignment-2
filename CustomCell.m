@@ -21,12 +21,11 @@
     // Configure the view for the selected state
 }
 
-//- (void)dealloc {
-//    [_companyImage release];
-//    [_companyName release];
-//    [_stockPrice release];
-//    [_companyImageView release];
-//    [_companyImage release];
-//    [super dealloc];
-//}
+- (void)dealloc {
+    [_companyImage release];
+    [_companyName release];
+    [_stockPrice release];
+    [_companyImageView release];
+    [super dealloc];
+}
 @end
