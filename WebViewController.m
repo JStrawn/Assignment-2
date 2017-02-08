@@ -28,6 +28,8 @@
     NSURLRequest *urlRequest = [NSURLRequest requestWithURL:url];
     [_webView loadRequest:urlRequest];
     [self.view addSubview:_webView];
+    
+    //[super viewDidAppear:YES];
 }
     
 
@@ -48,7 +50,7 @@
 */
 
 -(void)dealloc {
-    [_webView release];
+    //[_webView release];
     [_currentProduct release];
     [super dealloc];
 }

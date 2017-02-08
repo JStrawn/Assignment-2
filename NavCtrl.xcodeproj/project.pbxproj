@@ -20,6 +20,9 @@
 		48A656DA18163BF200746D36 /* NavCtrlTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 48A656D918163BF200746D36 /* NavCtrlTests.m */; };
 		48A656E718163C1B00746D36 /* CompanyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 48A656E518163C1B00746D36 /* CompanyViewController.xib */; };
 		48A656EE1816468000746D36 /* Sunflower.gif in Resources */ = {isa = PBXBuildFile; fileRef = 48A656ED1816468000746D36 /* Sunflower.gif */; };
+		C3010DF31E4BC6E10029CB8C /* offline.png in Resources */ = {isa = PBXBuildFile; fileRef = C3010DF21E4BC6E10029CB8C /* offline.png */; };
+		C3010DF61E4BCFA10029CB8C /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = C3010DF51E4BCFA10029CB8C /* Reachability.m */; };
+		C3010DF81E4BD3660029CB8C /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C3010DF71E4BD3660029CB8C /* SystemConfiguration.framework */; };
 		C30FF3161E3E880E00700306 /* ProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C30FF3141E3E880E00700306 /* ProductViewController.m */; };
 		C30FF3171E3E880E00700306 /* ProductViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C30FF3151E3E880E00700306 /* ProductViewController.xib */; };
 		C33A0D251E426CB500AFED69 /* CustomCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C33A0D231E426CB500AFED69 /* CustomCell.m */; };
@@ -75,6 +78,10 @@
 		48A656D918163BF200746D36 /* NavCtrlTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NavCtrlTests.m; sourceTree = "<group>"; };
 		48A656E518163C1B00746D36 /* CompanyViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = CompanyViewController.xib; path = ../CompanyViewController.xib; sourceTree = "<group>"; };
 		48A656ED1816468000746D36 /* Sunflower.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = Sunflower.gif; sourceTree = "<group>"; };
+		C3010DF21E4BC6E10029CB8C /* offline.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = offline.png; path = ../../../../Downloads/offline.png; sourceTree = "<group>"; };
+		C3010DF41E4BCFA10029CB8C /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		C3010DF51E4BCFA10029CB8C /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
+		C3010DF71E4BD3660029CB8C /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		C30FF3131E3E880E00700306 /* ProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductViewController.h; sourceTree = "<group>"; };
 		C30FF3141E3E880E00700306 /* ProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductViewController.m; sourceTree = "<group>"; };
 		C30FF3151E3E880E00700306 /* ProductViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductViewController.xib; sourceTree = "<group>"; };
@@ -119,6 +126,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C3010DF81E4BD3660029CB8C /* SystemConfiguration.framework in Frameworks */,
 				C39C57781E259900007683A1 /* CoreData.framework in Frameworks */,
 				C3E104641DF75C9C00DA664E /* WebKit.framework in Frameworks */,
 				48A656B718163BF200746D36 /* CoreGraphics.framework in Frameworks */,
@@ -175,6 +183,8 @@
 				C33A0D281E4286DC00AFED69 /* CustomCellProduct.m */,
 				C33A0D291E4286DC00AFED69 /* CustomCellProduct.xib */,
 				C30FF3131E3E880E00700306 /* ProductViewController.h */,
+				C3010DF41E4BCFA10029CB8C /* Reachability.h */,
+				C3010DF51E4BCFA10029CB8C /* Reachability.m */,
 				C30FF3141E3E880E00700306 /* ProductViewController.m */,
 				C30FF3151E3E880E00700306 /* ProductViewController.xib */,
 			);
@@ -212,6 +222,7 @@
 		48A656B318163BF200746D36 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C3010DF71E4BD3660029CB8C /* SystemConfiguration.framework */,
 				C39C57771E259900007683A1 /* CoreData.framework */,
 				C3E104631DF75C9C00DA664E /* WebKit.framework */,
 				48A656B418163BF200746D36 /* Foundation.framework */,
@@ -243,6 +254,7 @@
 				C3B1034C1E39641100D1424C /* emptystate-homeView.png */,
 				C3B1034D1E39641100D1424C /* emptystate-homeView@2x.png */,
 				C3B1034E1E39641100D1424C /* emptystate-homeView@3x.png */,
+				C3010DF21E4BC6E10029CB8C /* offline.png */,
 				48A656ED1816468000746D36 /* Sunflower.gif */,
 				48A656BC18163BF200746D36 /* NavCtrl-Info.plist */,
 				48A656BD18163BF200746D36 /* InfoPlist.strings */,
@@ -376,6 +388,7 @@
 			files = (
 				C33A0D2B1E4286DC00AFED69 /* CustomCellProduct.xib in Resources */,
 				C3B103531E39641100D1424C /* emptystate-homeView@3x.png in Resources */,
+				C3010DF31E4BC6E10029CB8C /* offline.png in Resources */,
 				C3B103501E39641100D1424C /* emptystate-homeView.pdf in Resources */,
 				C33A0D261E426CB500AFED69 /* CustomCell.xib in Resources */,
 				C3B103561E396D0600D1424C /* Launch Screen.storyboard in Resources */,
@@ -410,6 +423,7 @@
 				C3B103441E39531900D1424C /* CompanyViewController.m in Sources */,
 				C3E1046B1DF8AECD00DA664E /* Product.m in Sources */,
 				C3D4832C1E009C940052EE89 /* ItemInputViewController.m in Sources */,
+				C3010DF61E4BCFA10029CB8C /* Reachability.m in Sources */,
 				C3E104681DF8AEB500DA664E /* Company.m in Sources */,
 				C3E104621DF7495200DA664E /* WebViewController.m in Sources */,
 				C39C577C1E26E476007683A1 /* CoreDataHelper.m in Sources */,

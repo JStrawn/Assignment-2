@@ -148,6 +148,7 @@
         
         [self.sharedManager createManagedProduct:newProduct inCompany:self.currentCompany];
         
+        
         [[self navigationController] popViewControllerAnimated:YES];
     }
 }
@@ -173,7 +174,12 @@
             self.imageTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/6,  frm.size.width, 30);
             self.urlTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/4.1,  frm.size.width, 30);
         }];
-        
+    
+    self.nameTextField.textAlignment = NSTextAlignmentLeft;
+    self.imageTextField.textAlignment = NSTextAlignmentLeft;
+    self.urlTextField.textAlignment = NSTextAlignmentLeft;
+
+    
 }
 
 -(void)dismissKeyboard
@@ -181,9 +187,15 @@
     CGRect frm = self.view.frame;
     
     [UIView animateWithDuration:0.3f animations:^ {
-        self.nameTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/3, self.view.frame.size.width, 30);
-        self.imageTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/2.3, self.view.frame.size.width, 30);
-        self.urlTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/1.85, self.view.frame.size.width, 30);
+        self.nameTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/3, self.view.frame.size.width/1.5, 30);
+        self.imageTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/2.3, self.view.frame.size.width/1.5, 30);
+        self.urlTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/1.85, self.view.frame.size.width/1.5, 30);
+    
+        self.nameTextField.textAlignment = NSTextAlignmentCenter;
+        self.imageTextField.textAlignment = NSTextAlignmentCenter;
+        self.urlTextField.textAlignment = NSTextAlignmentCenter;
+
+    
     }];
     
     [self.view endEditing:YES];

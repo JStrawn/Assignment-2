@@ -152,8 +152,15 @@
     NSString *companyString = [NSString stringWithFormat:@"%@ (%@)", self.currentCompany.name, self.currentCompany.ticker];
     cell.companyName.text = companyString;
     
-    UIImage *companyIcon = [self getImageFromURL:self.currentCompany.imageURL];
+    
+    UIImage *companyIcon = [self getImageFromURL:self.currentCompany.imageURL withTableViewCell:cell];
     cell.companyImage.image = companyIcon;
+    
+    if (cell.companyImage.image == nil) {
+        UIImage *offline = [UIImage imageNamed:@"offline.png"];
+        cell.companyImage.image = offline;
+    }
+    
     
     cell.companyImageView.layer.borderColor = [[UIColor colorWithRed:0.89 green:0.89 blue:0.89 alpha:1.0]CGColor];
     cell.companyImageView.layer.borderWidth = 1.0f;
@@ -237,6 +244,7 @@
     return YES;
 }
 
+
 #pragma mark - Table view delegate
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -248,10 +256,18 @@
         self.itemInputViewController.isEditMode = YES;
         self.itemInputViewController.companyToEdit = company;
         
-        [self.navigationController
-         pushViewController:self.itemInputViewController
-         animated:YES];
-        
+        [UIView transitionFromView:self.view
+                            toView:self.itemInputViewController.view
+                          duration:0.5
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        completion:^(BOOL finished) {
+                            //[self.view removeFromSuperview];
+                                    [self.navigationController
+                                     pushViewController:self.itemInputViewController
+                                     animated:NO];
+                            
+                        }];
+
     } else {
         
         // Change the index path row in the array so the path to "products" is also rearranged
@@ -266,6 +282,9 @@
         [self.navigationController
          pushViewController:self.productViewController
          animated:YES];
+
+        
+        
     }
     
 }
@@ -290,13 +309,23 @@
      animated:YES];
 }
 
--(UIImage *) getImageFromURL:(NSString *)fileURL {
-    UIImage * result;
-    
-    NSData * data = [NSData dataWithContentsOfURL:[NSURL URLWithString:fileURL]];
-    result = [UIImage imageWithData:data];
-    
-    return result;
+-(UIImage *) getImageFromURL:(NSString *)fileURL withTableViewCell:(CustomCell*)cell{
+        
+        dispatch_queue_t concurrentQueue =
+        dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+        
+        // Declare your local data outside the block.
+        // `__block` specifies that the variable can be modified from within the block.
+        NSData * imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:fileURL]];
+        __block UIImage *result = [UIImage imageWithData:imageData];
+        
+        dispatch_sync(concurrentQueue, ^{
+            // Do something with `localData`...
+            cell.companyImage.image = result;
+        });
+        
+        // `localData` now contains your wonderful data.
+        return result;
 }
 
 

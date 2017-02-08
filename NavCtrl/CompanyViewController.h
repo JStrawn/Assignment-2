@@ -11,6 +11,7 @@
 #import "ItemInputViewController.h"
 #import "ProductInputViewController.h"
 #import "ProductViewController.h"
+#import "CustomCell.h"
 
 @class ProductViewController;
 @class ItemInputViewController;
@@ -40,7 +41,7 @@
 
 - (IBAction)addCompanyButton:(id)sender;
 
--(UIImage *)getImageFromURL:(NSString *)fileURL;
+-(UIImage *)getImageFromURL:(NSString *)fileURL withTableViewCell:(CustomCell*)cell;
 
 -(void)addItem:sender;
 

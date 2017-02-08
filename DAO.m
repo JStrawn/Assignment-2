@@ -9,6 +9,7 @@
 #import "DAO.h"
 #import "Product.h"
 #import "Company.h"
+#import "Reachability.h"
 
 @implementation DAO
 //self.dao.company is eventually how i'm going to get company list
@@ -27,10 +28,14 @@
 }
 
 
+
 -(id)init
 {
     self = [super init];
     [self initializeCoreData];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reachabilityChanged:) name:kReachabilityChangedNotification object:nil];
+    Reachability *reachability = [Reachability reachabilityForInternetConnection];
+    [reachability startNotifier];
 
     static NSString* const hasRunAppOnceKey = @"hasRunAppOnceKey";
     NSUserDefaults* defaults = [NSUserDefaults standardUserDefaults];
@@ -57,6 +62,26 @@
     return self;
     
 }
+
+- (void) reachabilityChanged:(NSNotification *)note
+{
+    Reachability* curReach = [note object];
+    NetworkStatus networStats = [curReach currentReachabilityStatus];
+    switch (networStats) {
+        case NotReachable:
+            //do nothing
+            break;
+        case ReachableViaWiFi:
+            [self loadStockPrices];
+            break;
+        case ReachableViaWWAN:
+            [self loadStockPrices];
+        default:
+            break;
+    }
+}
+
+
 
 
 - (void)loadStockPrices {

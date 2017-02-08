@@ -13,6 +13,7 @@
 #import "DAO.h"
 #import "ProductInputViewController.h"
 #import "WebViewController.h"
+#import "CustomCellProduct.h"
 
 @class ProductInputViewController;
 @class WebViewController;
@@ -35,6 +36,11 @@
 @property (retain, nonatomic) IBOutlet UILabel *companyLabel;
 
 @property (retain, nonatomic) IBOutlet UIView *companyImagePaddingView;
+
+@property BOOL isOffline;
+
+-(UIImage *)getImageFromURL:(NSString *)fileURL withTableViewCell:(CustomCellProduct*)cell;
+
 
 
 @end

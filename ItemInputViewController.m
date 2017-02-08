@@ -42,11 +42,11 @@
 }
 
 -(void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
     
     CGRect frm = self.view.frame;
     
     self.nameTextField = [[[UITextField alloc]initWithFrame:CGRectMake(frm.size.width/6, frm.size.height/3, ((self.view.frame.size.width)/1.5), 30)]autorelease];
+    
     self.nameTextField.borderStyle = UITextBorderStyleNone;
     self.nameTextField.returnKeyType = UIReturnKeyDone;
     self.nameTextField.delegate = self;
@@ -90,6 +90,8 @@
         self.tickerTextField.placeholder = @"Ticker Symbol";
         self.imageTextField.placeholder = @"Image URL";
     }
+    
+    [super viewDidAppear:YES];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -199,9 +201,9 @@
     CGRect frm = self.view.frame;
 
     [UIView animateWithDuration:0.3f animations:^ {
-        self.nameTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/3, self.view.frame.size.width, 30);
-        self.tickerTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/2.3, self.view.frame.size.width, 30);
-        self.imageTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/1.85, self.view.frame.size.width, 30);
+        self.nameTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/3, self.view.frame.size.width/1.5, 30);
+        self.tickerTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/2.3, self.view.frame.size.width/1.5, 30);
+        self.imageTextField.frame = CGRectMake(frm.size.width/6, frm.size.height/1.85, self.view.frame.size.width/1.5, 30);
         
         
         self.nameTextField.adjustsFontSizeToFitWidth = NO;
@@ -212,9 +214,6 @@
         self.tickerTextField.textAlignment = NSTextAlignmentCenter;
         self.imageTextField.textAlignment = NSTextAlignmentCenter;
         
-        self.nameTextField.center = self.view.center;
-        self.tickerTextField.center = self.view.center;
-        self.imageTextField.center = self.view.center;
     
     }];
 

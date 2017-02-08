@@ -48,10 +48,13 @@
     self.tableView.allowsSelectionDuringEditing = YES;
     
     //company image
-    NSURL * imageURL = [NSURL URLWithString:self.currentCompany.imageURL];
-    NSData * imageData = [NSData dataWithContentsOfURL:imageURL];
-    UIImage * image = [UIImage imageWithData:imageData];
-    self.companyImage.image = image;
+    self.companyImage.image = [self getImageFromURL:self.currentCompany.imageURL withTableViewCell:nil];
+    if (self.companyImage.image == nil) {
+        UIImage *offline = [UIImage imageNamed:@"offline.png"];
+        self.companyImage.image = offline;
+    }
+
+    
     
     self.companyImage.backgroundColor = [UIColor whiteColor];
     self.companyImagePaddingView.layer.cornerRadius = 15;
@@ -121,14 +124,26 @@
     
     cell.productName.text = self.currentProduct.name;
 
+    UIImage *offline = [UIImage imageNamed:@"offline.png"];
+    
+    self.isOffline = NO;
+    
     if (self.currentProduct.image == nil) {
-        UIImage *defaultIcon = [self getImageFromURL:self.currentCompany.imageURL];
+        UIImage *defaultIcon = [self getImageFromURL:self.currentCompany.imageURL withTableViewCell:cell];
         cell.productImage.image = defaultIcon;
+        if (defaultIcon == nil) {
+            cell.productImage.image = offline;
+            self.isOffline = YES;
+        }
     } else if ([self.currentProduct.image isEqualToString: @""]) {
-        UIImage *defaultIcon = [self getImageFromURL:self.currentCompany.imageURL];
+        UIImage *defaultIcon = [self getImageFromURL:self.currentCompany.imageURL withTableViewCell:cell];
         cell.productImage.image = defaultIcon;
-    } else {
-    UIImage *productIcon = [self getImageFromURL:self.currentProduct.image];
+        if (defaultIcon == nil) {
+            cell.productImage.image = offline;
+            self.isOffline = YES;
+        }
+    } else if (self.isOffline == NO) {
+    UIImage *productIcon = [self getImageFromURL:self.currentProduct.image withTableViewCell:cell];
     cell.productImage.image = productIcon;
     }
     
@@ -138,6 +153,7 @@
     
     return cell;
 }
+
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
@@ -190,29 +206,51 @@
         Product* product = [self.currentCompany.products objectAtIndex:indexPath.row];
         self.productInputViewController.isEditMode = YES;
         self.productInputViewController.productToEdit = product;
-        [self.navigationController
-         pushViewController:self.productInputViewController
-         animated:YES];
+        
+        [UIView transitionFromView:self.view
+                            toView:self.productInputViewController.view
+                          duration:0.5
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        completion:^(BOOL finished) {
+                            //[self.view removeFromSuperview];
+                            [self.navigationController
+                             pushViewController:self.productInputViewController
+                             animated:NO];
+                            
+                        }];
+
     } else {
         self.productInputViewController = [[[ProductInputViewController alloc]init]autorelease];
         self.productInputViewController.isEditMode = NO;
         
-        WebViewController *webViewController = [[[WebViewController alloc]init]autorelease];
+        self.webViewController = [[[WebViewController alloc]init]autorelease];
         //initialize current company again so it carries over
         self.productInputViewController.currentCompany = self.currentCompany;
         
         Product* product = [self.currentCompany.products objectAtIndex:indexPath.row];
         
-        webViewController.title = product.name;
+        self.webViewController.title = product.name;
         
         self.navigationItem.backBarButtonItem = [[[UIBarButtonItem alloc] initWithTitle:@"Back" style:UIBarButtonItemStylePlain target:self action:nil]autorelease];
         
         
         //this sets the product property in WebviewController
-        webViewController.currentProduct = product;
-        [self.navigationController
-         pushViewController:webViewController
-         animated:YES];
+        self.webViewController.currentProduct = product;
+
+        
+        
+        [UIView transitionFromView:self.view
+                            toView:self.webViewController.view
+                          duration:0.5
+                           options:UIViewAnimationOptionTransitionCrossDissolve
+                        completion:^(BOOL finished) {
+                            //[self.view removeFromSuperview];
+                            [self.navigationController
+                             pushViewController:self.webViewController
+                             animated:NO];
+                            
+                        }];
+    
     }
 }
 
@@ -247,12 +285,23 @@
      animated:YES];
 }
 
--(UIImage *) getImageFromURL:(NSString *)fileURL {
-    UIImage * result;
+-(UIImage *) getImageFromURL:(NSString *)fileURL withTableViewCell:(CustomCellProduct *)cell{
     
-    NSData * data = [NSData dataWithContentsOfURL:[NSURL URLWithString:fileURL]];
-    result = [UIImage imageWithData:data];
     
+    dispatch_queue_t concurrentQueue =
+    dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    
+    // Declare your local data outside the block.
+    // `__block` specifies that the variable can be modified from within the block.
+    NSData * imageData = [NSData dataWithContentsOfURL:[NSURL URLWithString:fileURL]];
+    __block UIImage *result = [UIImage imageWithData:imageData];
+    
+    dispatch_sync(concurrentQueue, ^{
+        // Do something with `result`...
+        
+    });
+    
+    // `result` now contains your image
     return result;
 }
 
